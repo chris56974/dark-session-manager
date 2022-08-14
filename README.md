@@ -20,5 +20,6 @@ DSM is a session manager inspired by [Workona](https://workona.com/). The emphas
 
 ## [Logo (Figma)](https://www.figma.com/file/f3AxaotOiuVRECkb7Iqy8k/Dark-Session-Manager-Logo?node-id=0%3A1)
 
+
 ## [License (GPLv3)](https://github.com/chris56974/dark-session-manager/blob/main/LICENSE)
 

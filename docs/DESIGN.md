@@ -8,4 +8,4 @@ I thought workona wasn't that fast on browser startup. So that biased my decisio
 
 ## No typescript
 
-The browser doesn't understand TS, so I would have to re-compile before I saw any of my changes. Either that, or I would have to use some live reload thing. All I really want is intellisense for the chrome APIs and TS can provide that for vanilla JS via `checkJs: true`.
+The browser doesn't understand TS, so I would have to re-compile everytime to see any changes. Either that, or I would have to use some live reload thing. All I really want is intellisense for the chrome APIs and TS can provide that for vanilla JS via `checkJs: true`.

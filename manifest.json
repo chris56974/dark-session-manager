@@ -1,12 +1,24 @@
 {
-  "name": "Dark Session Manager",
+  "name": "16x Session Manager",
   "description": "A session manager that respects your eyes",
   "version": "1.00",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
-  }, 
+  },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "imgs/16x16.png",
+      "32": "imgs/32x32.png",
+      "48": "imgs/48x48.png",
+      "128": "imgs/128x128.png"
+    }
+  },
+  "icons": {
+    "16": "imgs/16x16.png",
+    "32": "imgs/32x32.png",
+    "48": "imgs/48x48.png",
+    "128": "imgs/128x128.png"
   }
 }
