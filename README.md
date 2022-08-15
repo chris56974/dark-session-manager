@@ -5,7 +5,7 @@ DSM is a session manager inspired by [Workona](https://workona.com/). The emphas
 ## Features
 
 - Computer/Browser awareness for local file links
-- Workspaces/Resources/Tabs
+- Tab groups for each workspace
 - [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API) for note taking and pdf previews.
 - User choice of UI (bookmark, Page)
 - Performant (vanilla JS, no tracking)
@@ -17,14 +17,16 @@ DSM is a session manager inspired by [Workona](https://workona.com/). The emphas
 - `Alt + a` -> Switch Workspace
 - `Alt + w` -> Close workspace
 - `Alt + f` -> Open DSM
+- `J` -> move left one tab
+- `K` -> move right one tab
 
 ## Resources
 
+### Development
 - [query/restore tabs/windows](https://developer.chrome.com/docs/extensions/reference/sessions/)
 - [create, modify, rearrange tabs](https://developer.chrome.com/docs/extensions/reference/tabs/)
-
+- [Tabgroups](https://blog.google/products/chrome/manage-tabs-with-google-chrome/)
 
 ## [Logo (Figma)](https://www.figma.com/file/f3AxaotOiuVRECkb7Iqy8k/Dark-Session-Manager-Logo?node-id=0%3A1)
 
 ## [License (GPLv3)](https://github.com/chris56974/dark-session-manager/blob/main/LICENSE)
-
