@@ -6,6 +6,7 @@ chrome.windows.onCreated.addListener(() => {
     active: false,
     pinned: true,
   })
+  console.log(dsm_tab)
 })
 
 chrome.contextMenus.onClicked.addListener(() => {

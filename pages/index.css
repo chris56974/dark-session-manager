@@ -1,7 +1,8 @@
 :root {
   --main-bg-color: hsl(200, 6%, 10%);
   --sidebar-bg-color: hsl(219, 13%, 21%);
-  --main-txt-color: hsl(291, 95%, 75%);
+  --main-txt-color: hsl(272, 90%, 76%);
+  --alt-txt-color: hsl(291, 95%, 75%);
 }
 
 body {
@@ -10,8 +11,16 @@ body {
   border-radius: 25%;
 }
 
-main {
-
-}
-
+#layout {}
 #sidebar {}
+
+#current-window-container {}
+#current-window-container__tabs {}
+
+#session-container {}
+#session-container__tabs {}
+
+#feature-nav {}
+#content {}
+#content__tabs {}
+#content__resources {}
