@@ -1,5 +1,6 @@
 :root {
-  --main-bg-color: hsl(219, 13%, 21%);
+  --main-bg-color: hsl(200, 6%, 10%);
+  --sidebar-bg-color: hsl(219, 13%, 21%);
   --main-txt-color: hsl(291, 95%, 75%);
 }
 
@@ -8,3 +9,9 @@ body {
   color: var(--main-txt-color);
   border-radius: 25%;
 }
+
+main {
+
+}
+
+#sidebar {}

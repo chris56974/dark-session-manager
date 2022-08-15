@@ -1,3 +1,2 @@
-chrome.commands.onCommand.addListener((command) => {
-  
-})
+// chrome.commands.onCommand.addListener((command) => {
+// })

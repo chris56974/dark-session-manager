@@ -1,6 +1,7 @@
 {
   "name": "Dark Session Manager",
   "description": "A dark theme session manager",
+  "homepage_url": "https://github.com/chris56974/dark-session-manager",
   "version": "1.00",
   "manifest_version": 3,
   "background": {
@@ -22,6 +23,15 @@
     "128": "imgs/128x128.png"
   },
   "permissions": [
-    "sessions"
-  ]
+    "sessions",
+    "contextMenus"
+  ],
+  "commands": {
+    "open-dsm": {
+      "suggested_key": {
+        "default": "Alt+F"
+      },
+      "description": "Open DSM"
+    }
+  }
 }
