@@ -26,6 +26,7 @@ DSM is a session manager inspired by [Workona](https://workona.com/). The emphas
 - [query/restore tabs/windows](https://developer.chrome.com/docs/extensions/reference/sessions/)
 - [create, modify, rearrange tabs](https://developer.chrome.com/docs/extensions/reference/tabs/)
 - [Tabgroups](https://blog.google/products/chrome/manage-tabs-with-google-chrome/)
+- [vim.wasm](https://github.com/rhysd/vim.wasm)
 
 ## [Logo (Figma)](https://www.figma.com/file/f3AxaotOiuVRECkb7Iqy8k/Dark-Session-Manager-Logo?node-id=0%3A1)
 

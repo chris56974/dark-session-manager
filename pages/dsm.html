@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="dsm.css" />
+    <script src="dsm.js"></script>
+  </head>
+  <body>
+    <main id="layout">
+      <div id="sidebar">
+        <h1>DSM</h1>
+        <div id="current-session">
+          <h2>Current Tabs 🌌</h2>
+          <div id="current-session__tabs"></div>
+          <button>Clear All Tabs</button>
+        </div>
+        <div id="sessions-div">
+          <h2>Sessions 📑</h2>
+          <div id="sessions-div__saved-sessions"></div>
+          <button>New Session</button>
+          <button>Save session</button>
+        </div>
+        <footer>
+          <a
+            href="https://github.com/chris56974/dark-session-manager"
+            target="_blank"
+            >Github</a
+          >
+          <button>⚙️</button>
+        </footer>
+      </div>
+      <h1 id="current-session-heading">Current Session</h1>
+      <nav #id="nav">
+        <ul #id="nav__ul">
+          <li class="nav__item">
+            <button class="nav__link">Tabs & Resources</button>
+          </li>
+          <span>/</span>
+          <li class="nav__item">
+            <button class="nav__link">Notes</button>
+          </li>
+        </ul>
+      </nav>
+      <div id="workspace">
+        <div id="workspace__tabs-and-resources-div">
+          <div id="workspace__tabs"></div>
+          <div id="workspace__resources"></div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

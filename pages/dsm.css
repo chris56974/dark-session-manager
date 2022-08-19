@@ -1,0 +1,88 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+:root {
+  --main-bg-color: hsl(200, 6%, 10%);
+  --sidebar-bg-color: hsl(219, 13%, 21%);
+  --main-txt-color: hsl(272, 90%, 76%);
+  --main-txt-hover-color: hsl(291, 95%, 75%);
+}
+
+body {
+  background-color: var(--main-bg-color);
+  color: var(--main-txt-color);
+  box-sizing: border-box;
+}
+
+#layout {
+  display: grid;
+  grid-template-areas:
+    "sidebar session-heading . nav . . ."
+    "sidebar . . . . . ."
+    "sidebar . workspace workspace workspace workspace ."
+    "sidebar . workspace workspace workspace workspace ."
+    "sidebar . workspace workspace workspace workspace ."
+    "sidebar . . . . . ."
+  ;
+}
+
+/* SIDEBAR */
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  grid-area: sidebar;
+  background-color: var(--sidebar-bg-color);
+  height: 100vh;
+}
+
+#current-session {}
+
+#current-session__tabs {}
+
+#sessions-div {
+  margin-bottom: auto;
+}
+
+#sessions-div__saved-sessions {}
+
+footer {}
+
+#current-session-heading {
+  grid-area: session-heading;
+}
+
+/* NAVIGATION */
+#nav {
+  grid-area: nav;
+}
+
+.nav__item {
+  /* display: inline; makes the nav horizontal instead of vertical*/
+  display: inline;
+}
+
+.nav__link {
+  color: var(--main-txt-color);
+  outline: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* MAIN WORKSPACE */
+
+#workspace-content {
+  grid-area: workspace;
+  height: 80vh;
+}
+
+#workspace__tabs-and-resources-div {}
+
+#workspace__tabs {}
+
+#workspace__resources {}
