@@ -40,15 +40,15 @@ body {
   height: 100vh;
 }
 
-#current-session {}
+#current-session-div {}
 
-#current-session__tabs {}
+#current-tabs-list {}
 
 #sessions-div {
   margin-bottom: auto;
 }
 
-#sessions-div__saved-sessions {}
+#saved-sessions-div {}
 
 footer {}
 
@@ -76,7 +76,7 @@ footer {}
 
 /* MAIN WORKSPACE */
 
-#workspace-content {
+#workspace {
   grid-area: workspace;
   height: 80vh;
 }

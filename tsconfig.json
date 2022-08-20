@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "skipLibCheck": true,   
+    "skipLibCheck": true,
     "checkJs": true,
+    "lib": [
+      "es2015",
+      "DOM"
+    ]
   }
 }

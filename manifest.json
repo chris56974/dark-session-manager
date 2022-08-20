@@ -24,7 +24,8 @@
   "permissions": [
     "sessions",
     "contextMenus",
-    "tabs"
+    "tabs", 
+    "storage"
   ],
   "commands": {
     "open-dsm": {
