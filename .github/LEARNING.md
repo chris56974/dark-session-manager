@@ -1,35 +1,9 @@
-## No dedicated tab for chrome extensions
+## Moving Tabs Programmatically
 
-Chrome extensions have popup.html and options.html but no landing.html it seems.
+I thought there'd be a web API for navigating to different tabs since we already have `window.location.href = foo.com`. 
+But outside of chrome extensions, there isn't one because that would be a security vulnerability it turns out
+Kudos to this thread on SO https://stackoverflow.com/questions/46285381/change-chrome-tab-with-javascript
 
-## Content Script vs Background Script
+## DOM Manipulation 
 
-You use content scripts to manipulate and respond to the DOM of a particular webpage
-You use background scripts to respond to events and for APIs
-My dsm.js file is not a content script, it's another background script I think
-
-## Content Script Stuff
-
-Content scripts live in an "isolated world". An isolated world is a private execution environment that isn't accessible to the webpage or to other extensions. This means JS variables in a content script is not visible to the host page.
-
-## Gotcha
-
-```js
-chrome.windows.onCreated.addListener(async () => {
-  await chrome.tabs.create({
-    url: "pages/dsm.html",
-    active: false,
-    pinned: true,
-    index: 0,
-  });
-  await chrome.runtime.sendMessage("bg.js -> dsm.js");
-});
-```
-
-## Can't use JS to move to the next tab programmatically
-
-I thought it would be easy to navigate to the next tab via JS but it looks like it's disallowed for security reasons.
-
-It makes a lot of sense, interesting to think about.
-
-https://stackoverflow.com/questions/46285381/change-chrome-tab-with-javascript
+You can see it at this commit here. But I ran into an issue where my `window.onload` event and my `window.onfocus` event were firing at the same time.  Which means my handlers for those events were mutating the DOM at the same time. This caused unexpected behaviour and I was getting both their output at the same time (when only one should prevail). 

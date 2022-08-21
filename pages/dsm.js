@@ -12,7 +12,7 @@ window.addEventListener('focus', () => {
 })
 
 // if the user refreshes the page
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   refreshTabs()
   fetchSessions()
 })
@@ -30,7 +30,6 @@ document.addEventListener("keydown", (event) => {
     })
   }
 });
-
 
 clearTabsBtn.addEventListener('click', async () => {
   const tabs = await chrome.tabs.query({ currentWindow: true })
@@ -74,7 +73,7 @@ async function fetchSessions() {
   }
   const sessions = await chrome.storage.sync.get(null)
   // @ts-ignore
-  for (const session of sessions.keys()) {
+  for (const session in sessions) {
     const sessionElement = createSessionElement(session)
     sessionList.appendChild(sessionElement)
   }
