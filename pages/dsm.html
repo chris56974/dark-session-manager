@@ -11,16 +11,21 @@
     <main id="layout">
       <div id="sidebar">
         <h1>DSM</h1>
-        <div id="current-session-div">
-          <h2>Current Tabs 🌌</h2>
-          <ul id="current-tabs-list"></ul>
-          <button id="clear-all-tabs-btn">Clear All Tabs</button>
+        <div id="current-tabs-div">
+          <h2>
+            Current Tabs 🌌
+            <button id="clear-all-tabs-btn">New</button>
+          </h2>
+          <ul id="current-tab-list"></ul>
         </div>
         <div id="sessions-div">
-          <h2>Sessions 📑</h2>
-          <div id="saved-sessions-div"></div>
-          <button>New Session</button>
-          <button>Save session</button>
+          <h2>
+            Sessions 📑
+            <input id="save-session-input" type="text" />
+            <button id="save-session-btn">Save</button>
+            <button id="clear-all-sessions-btn">Clear</button>
+          </h2>
+          <ul id="saved-session-list"><ul/>
         </div>
         <footer>
           <a
@@ -28,12 +33,12 @@
             target="_blank"
             >Github</a
           >
-          <button>⚙️</button>
+          <button id="settings-btn">⚙️</button>
         </footer>
       </div>
       <h1 id="current-session-heading">Current Session</h1>
-      <nav #id="nav">
-        <ul #id="nav__ul">
+      <nav id="nav">
+        <ul id="nav__ul">
           <li class="nav__item">
             <button class="nav__link">Tabs & Resources</button>
           </li>

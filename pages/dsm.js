@@ -1,43 +1,21 @@
-const curTabsList = document.getElementById("current-tabs-list");
+const currentTabList = document.getElementById("current-tab-list");
 const clearTabsBtn = document.getElementById("clear-all-tabs-btn");
+const sessionList = document.getElementById("saved-session-list")
+const saveSessionBtn = document.getElementById("save-session-btn")
+const saveSessionInput = document.getElementById("save-session-input")
+const clearAllSessions = document.getElementById("clear-all-sessions-btn")
+const settingsBtn = document.getElementById("settings-btn")
 
-clearTabsBtn.addEventListener('click', async () => {
-  const tabs = await chrome.storage.sync.get(['tabs'])
-  console.log(tabs)
-});
+window.addEventListener('focus', () => {
+  refreshTabs()
+  fetchSessions()
+})
 
-(function init() {
-  chrome.tabs.query({ currentWindow: true })
-    .then((tabs) => {
-      const tabsHash = {}
-      tabsHash.numOfTabs = 0 // tabsHash.length
-
-      for (const tab of tabs) {
-        tabsHash.numOfTabs += 1
-        tabsHash[tab.id] = {
-          groupId: tab.groupId,
-          index: tab.index,
-          title: tab.title,
-          url: tab.url
-        }
-      }
-
-      chrome.storage.sync.set({ tabs: tabsHash })
-
-      for (let i = 1; i < tabs.length; i++) {
-        const tabElement = createTabElement(tabs[i])
-        curTabsList.appendChild(tabElement)
-      }
-    })
-})();
-
-function createTabElement(tab) {
-  const tabElement = document.createElement("li")
-  tabElement.id = tab.id
-  tabElement.className = "current-tab"
-  tabElement.textContent = `${tab.title.length > 0 ? tab.title : "New Tab"}`
-  return tabElement
-}
+// if the user refreshes the page
+window.addEventListener('load', () => {
+  refreshTabs()
+  fetchSessions()
+})
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "J" && !(event.ctrlKey)) {
@@ -45,64 +23,75 @@ document.addEventListener("keydown", (event) => {
       chrome.tabs.update(tabs[tabs.length - 1].id, { active: true })
     })
   }
+
   if (event.key === "K" && !(event.ctrlKey)) {
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
       chrome.tabs.update(tabs[1].id, { active: true })
     })
   }
-})
+});
 
-chrome.tabs.onCreated.addListener((tab) => {
-  chrome.storage.sync.get(['tabs'], ({ tabs }) => {
-    tabs.numOfTabs += 1
-    tabs[tab.id] = {
-      groupId: tab.groupId,
-      index: tab.index,
-      title: tab.title,
-      url: tab.url
-    }
-    chrome.storage.sync.set({ tabs: tabs })
-  })
 
-  const tabElement = createTabElement(tab)
-  curTabsList.appendChild(tabElement)
-})
+clearTabsBtn.addEventListener('click', async () => {
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+  const tabIds = tabs.map((tab) => tab.id).slice(1)
+  chrome.tabs.remove(tabIds)
 
-// Mutates
-chrome.tabs.onRemoved.addListener((tabId, _) => {
-  chrome.storage.sync.get(['tabs'], ({ tabs }) => {
-    tabs.numOfTabs -= 1
-    delete tabs[tabId]
-    chrome.storage.sync.set({ tabs: tabs })
-  })
-  document.getElementById(`${tabId}`).remove()
-})
-
-chrome.tabs.onMoved.addListener(() => {
-  chrome.tabs.query({ currentWindow: true }, (tabs) => {
-    for (let i = 1; i < tabs.length; i++) {
-      curTabsList.children.item(i - 1).textContent = `${tabs[i].title.length > 0 ? tabs[i].title : "New Tab"}`
-    }
-  })
-})
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === "complete") {
-    chrome.storage.sync.get(['tabs'], ({ tabs }) => {
-      tabs[tabId] = {
-        groupId: tab.groupId,
-        index: tab.index,
-        title: tab.title,
-        url: tab.url
-      }
-      chrome.storage.sync.set({ tabs: tabs })
-    })
-
-    const updatedTab = document.getElementById(`${tabId}`)
-
-    if (updatedTab) {
-      updatedTab.textContent = `${tab.title.length > 0 ? tab.title : "New Tab"}`
-    }
+  while (currentTabList.firstChild) {
+    currentTabList.removeChild(currentTabList.lastChild)
   }
 })
 
+saveSessionBtn.addEventListener('click', async () => {
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+  // @ts-ignore
+  const sessionName = saveSessionInput.value.toString()
+  // @ts-ignore
+  saveSessionInput.value = ""
+  chrome.storage.sync.set({ [sessionName]: tabs })
+  fetchSessions()
+})
+
+settingsBtn.addEventListener('click', async () => {
+  const sessions = await chrome.storage.sync.get(null)
+  console.log(sessions)
+})
+
+async function refreshTabs() {
+  while (currentTabList.firstChild) {
+    currentTabList.removeChild(currentTabList.lastChild)
+  }
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+  for (let i = 1; i < tabs.length; i++) {
+    const tabElement = createTabElement(tabs[i])
+    currentTabList.appendChild(tabElement)
+  }
+}
+
+async function fetchSessions() {
+  while (sessionList.firstChild) {
+    sessionList.removeChild(sessionList.lastChild)
+  }
+  const sessions = await chrome.storage.sync.get(null)
+  // @ts-ignore
+  for (const session of sessions.keys()) {
+    const sessionElement = createSessionElement(session)
+    sessionList.appendChild(sessionElement)
+  }
+}
+
+function createTabElement(tab) {
+  const tabElement = document.createElement("li")
+  tabElement.id = tab.id
+  tabElement.className = "tab"
+  tabElement.textContent = `${tab.title.length > 0 ? tab.title : "New Tab"}`
+  return tabElement
+}
+
+function createSessionElement(sessionName) {
+  const sessionElement = document.createElement("li")
+  sessionElement.id = sessionName
+  sessionElement.className = "session"
+  sessionName.textContent = sessionName
+  return sessionElement
+}

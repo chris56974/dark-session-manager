@@ -1,20 +1,4 @@
-I have to add my content scripts to the manifest.json 
-https://developer.chrome.com/docs/extensions/mv3/content_scripts/#static-declarative
+My extension doesn't need to know when tabs are added, removed, moved, updated. 
+I also don't need to save their tabs to storage lol
 
-leave a comment here if this fixes my problem
-https://stackoverflow.com/questions/9106519/port-error-could-not-establish-connection-receiving-end-does-not-exist-in-chr
-
-
-"content_scripts": [
-  {
-    "matches": [
-      "chrome-extension://hhmaoaobfenfigibpjglhdelfdfnjnip/pages/dsm.html"
-    ],
-    "css": [
-      "pages/dsm.css"
-    ],
-    "js": [
-      "pages/dsm.js"
-    ]
-  }
-],
+It just needs to update when the user visits the DSM page. 

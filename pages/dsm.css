@@ -40,15 +40,22 @@ body {
   height: 100vh;
 }
 
-#current-session-div {}
-
-#current-tabs-list {}
+#current-tabs-div {}
+#current-tab-list {}
 
 #sessions-div {
   margin-bottom: auto;
 }
 
-#saved-sessions-div {}
+#save-session-input {
+  outline: none;
+  border: none;
+  border-radius: 2px;
+  background-color: var(--main-bg-color);
+  color: var(--main-txt-color);
+}
+
+#saved-session-list {}
 
 footer {}
 
