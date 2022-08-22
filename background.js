@@ -3,7 +3,7 @@ const extensionURL = "chrome-extension://hhmaoaobfenfigibpjglhdelfdfnjnip/pages/
 chrome.windows.onCreated.addListener(async () => {
   const tabs = await chrome.tabs.query({ currentWindow: true })
   if (tabs[0].url === extensionURL) return
-  chrome.tabs.create({
+  await chrome.tabs.create({
     url: 'pages/dsm.html',
     active: false,
     pinned: true,

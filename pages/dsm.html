@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="dsm.css" />
-    <script src="dsm.js" defer></script>
+    <script src="js/dsm.js" type="module" defer></script>
+
   </head>
   <body>
     <main id="layout">
@@ -14,7 +15,7 @@
         <div id="current-tabs-div">
           <h2>
             Current Tabs 🌌
-            <button id="clear-all-tabs-btn">New</button>
+            <button id="clear-tabs-btn">Clear</button>
           </h2>
           <ul id="current-tab-list"></ul>
         </div>
@@ -23,7 +24,6 @@
             Sessions 📑
             <input id="save-session-input" type="text" />
             <button id="save-session-btn">Save</button>
-            <button id="clear-all-sessions-btn">Clear</button>
           </h2>
           <ul id="saved-session-list"><ul/>
         </div>
@@ -34,6 +34,7 @@
             >Github</a
           >
           <button id="settings-btn">⚙️</button>
+          <button id="clear-storage-btn">Clear chrome storage</button>
         </footer>
       </div>
       <h1 id="current-session-heading">Current Session</h1>

@@ -27,6 +27,9 @@
     "tabs", 
     "storage"
   ],
+  "web_accessible_resources": [
+    
+  ],
   "commands": {
     "open-dsm": {
       "suggested_key": {
