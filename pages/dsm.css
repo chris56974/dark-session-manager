@@ -41,13 +41,17 @@ body {
   width: 20vw;
 }
 
-#current-tabs-div {}
+/* #current-tabs-div {} */
 
 #current-tab-list {
   height: 25vh;
   text-overflow: ellipsis;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+#tabs {
+  
 }
 
 #sessions-div {

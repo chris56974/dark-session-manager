@@ -1,23 +1,56 @@
+import { tabGroupsDisabled } from "./settings.js"
+
 const sessionList = document.getElementById("saved-session-list")
 const saveSessionBtn = document.getElementById("save-session-btn")
 const saveSessionInput = document.getElementById("save-session-input")
+const clearStorageBtn = document.getElementById("clear-storage-btn")
 
-saveSessionBtn.addEventListener('click', async () => {
-  const tabs = await chrome.tabs.query({ currentWindow: true })
+clearStorageBtn.addEventListener('click', clearAllSessions)
+saveSessionBtn.addEventListener('click', saveNewSession)
+
+async function clearAllSessions() {
+  await chrome.storage.sync.clear()
+  fetchSessions()
+}
+
+async function saveNewSession() {
+  const tabsWithDSM = await chrome.tabs.query({ currentWindow: true })
   const sessions = await chrome.storage.sync.get(null)
-  if (tabs.length === 0) return
-
   // @ts-ignore
   const sessionName = saveSessionInput.value.toString()
-  if (sessionName.length === 0) return
+
+  const validationFailed = sessionValidation(tabsWithDSM, sessionName, sessions)
+  if (validationFailed) return
+
+  const tabs = tabsWithDSM.slice(1)
+  const tabIds = tabs.map((tab) => tab.id)
+
+  if (!tabGroupsDisabled) {
+    const groupId = await chrome.tabs.group({ tabIds })
+    await chrome.tabGroups.update(groupId, {
+      color: "grey", // make this dynamic later
+      title: sessionName
+    })
+  }
+
+  console.log("tabs finished", tabs)
+
+  chrome.storage.sync.set({ [sessionName]: tabs })
+  fetchSessions()
+}
+
+function sessionValidation(tabs, sessionName, sessions) {
+  if (tabs.length === 0) return true
+  if (sessionName.length === 0) return true
+
   // @ts-ignore
-  if (sessionName in sessions) return
+  if (sessionName in sessions) return true
 
   // @ts-ignore
   saveSessionInput.value = ""
-  chrome.storage.sync.set({ [sessionName]: tabs })
-  fetchSessions()
-})
+
+  return false
+}
 
 export async function fetchSessions() {
   const sessions = await chrome.storage.sync.get(null)
@@ -34,7 +67,6 @@ export async function fetchSessions() {
 }
 
 function createSessionElement(sessionName) {
-  console.log(sessionName)
   const sessionElement = document.createElement("li")
   sessionElement.id = sessionName
   sessionElement.className = "session"

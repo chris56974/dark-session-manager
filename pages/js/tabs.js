@@ -1,7 +1,9 @@
 const currentTabList = document.getElementById("current-tab-list");
 const clearTabsBtn = document.getElementById("clear-tabs-btn");
 
-clearTabsBtn.addEventListener('click', async () => {
+clearTabsBtn.addEventListener('click', clearAllTabs)
+
+async function clearAllTabs() {
   const tabs = await chrome.tabs.query({ currentWindow: true })
   const tabIds = tabs.map((tab) => tab.id).slice(1)
   chrome.tabs.remove(tabIds)
@@ -9,7 +11,7 @@ clearTabsBtn.addEventListener('click', async () => {
   while (currentTabList.firstChild) {
     currentTabList.removeChild(currentTabList.lastChild)
   }
-})
+}
 
 export async function refreshTabs() {
   const tabs = await chrome.tabs.query({ currentWindow: true })

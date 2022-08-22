@@ -1,0 +1,4 @@
+{
+  "javascript.suggest.autoImports": true,
+  "javascript.preferences.importModuleSpecifierEnding": "js"
+}

@@ -1,0 +1,9 @@
+#dadce
+#8ab4f
+#f28b8
+#fdd66
+#81c99
+#ff8bc
+#c58af
+#78d9e
+#fcad7

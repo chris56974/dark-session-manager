@@ -24,11 +24,9 @@
   "permissions": [
     "sessions",
     "contextMenus",
-    "tabs", 
+    "tabs",
+    "tabGroups",
     "storage"
-  ],
-  "web_accessible_resources": [
-    
   ],
   "commands": {
     "open-dsm": {
