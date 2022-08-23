@@ -26,7 +26,7 @@ async function saveNewSession() {
   const tabIds = tabs.map((tab) => tab.id)
 
   if (!tabGroupsDisabled) {
-    const groupId = await chrome.tabs.group({ tabIds })
+    var groupId = await chrome.tabs.group({ tabIds })
     await chrome.tabGroups.update(groupId, {
       color: "grey", // make this dynamic later
       title: sessionName
@@ -35,7 +35,13 @@ async function saveNewSession() {
 
   console.log("tabs finished", tabs)
 
-  chrome.storage.sync.set({ [sessionName]: tabs })
+  chrome.storage.sync.set({
+    [sessionName]: {
+      tabs,
+      tabIds,
+      groupId,
+    }
+  })
   fetchSessions()
 }
 
@@ -67,10 +73,18 @@ export async function fetchSessions() {
 }
 
 function createSessionElement(sessionName) {
-  const sessionElement = document.createElement("li")
-  sessionElement.id = sessionName
-  sessionElement.className = "session"
-  sessionElement.textContent = sessionName
+  const sessionEl = document.createElement("template")
+  sessionEl.innerHTML = `<li>haaaaaaaaaaaaaa</li>`
 
-  return sessionElement
+  sessionEl.id = sessionName
+  sessionEl.className = "session"
+  sessionEl.textContent = sessionName
+  sessionEl.addEventListener('click', toggleSession)
+
+  return sessionEl.content.cloneNode(true)
+}
+
+async function toggleSession(event, sessionName) {
+  console.log(event)
+  console.log(sessionName)
 }
