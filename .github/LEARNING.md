@@ -11,3 +11,9 @@ You can see it at this commit here c8ac39d65eed6e4e596c5f1dffef0fb7604e93df. But
 ## check-js instead of TS
 
 I miss TS a bit. I had to use @ts-ignore a couple of times, but other than that it was okay. 
+
+# TODO
+
+## CSS naming convention
+
+I'm not sure if I should put the name of the element in my css ID or not.

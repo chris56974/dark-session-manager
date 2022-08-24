@@ -22,16 +22,14 @@ body {
 #layout {
   display: grid;
   grid-template-areas:
-    "sidebar session-heading . nav . . ."
-    "sidebar . . . . . ."
-    "sidebar . workspace workspace workspace workspace ."
-    "sidebar . workspace workspace workspace workspace ."
-    "sidebar . workspace workspace workspace workspace ."
-    "sidebar . . . . . ."
+    "sidebar heading . . . "
+    "sidebar . . . . "
+    "sidebar workspace workspace workspace workspace "
+    "sidebar . . . ."
   ;
 }
 
-/* SIDEBAR */
+/* SIDEBAR TABS */
 #sidebar {
   display: flex;
   flex-direction: column;
@@ -41,24 +39,31 @@ body {
   width: 20vw;
 }
 
-/* #current-tabs-div {} */
+/* #sidebar-tabs */
+/* #sidebar-tabs__clear-btn */
 
-#current-tab-list {
+#sidebar-tabs__list {
   height: 25vh;
-  text-overflow: ellipsis;
-  overflow-x: hidden;
+  list-style-type: none;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
-#tabs {
-  
+.sidebar-tabs__list-item {
+  white-space: nowrap;
 }
 
-#sessions-div {
+.sidebar-tabs__list-item>button {
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+/* SIDEBAR SESSIONS */
+#sidebar-sessions {
   margin-bottom: auto;
 }
 
-#save-session-input {
+#sidebar-sessions__new-session-input {
   outline: none;
   border: none;
   border-radius: 2px;
@@ -66,45 +71,51 @@ body {
   color: var(--main-txt-color);
 }
 
-#saved-session-list {
+/* #sidebar-sessions__new-session-btn {} */
+
+#sidebar-sessions__list {
   text-overflow: ellipsis;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
+/* .sidebar-sessions__list-item {} */
+
+/* FOOTER */
 footer {}
 
-#current-session-heading {
-  grid-area: session-heading;
-}
+/* #footer__settings-btn {} */
+/* #footer__clear-storage-btn {} */
 
-/* NAVIGATION */
-#nav {
-  grid-area: nav;
-}
-
-.nav__item {
-  /* display: inline; makes the nav horizontal instead of vertical*/
-  display: inline;
-}
-
-.nav__link {
-  color: var(--main-txt-color);
-  outline: none;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
+/* WORKSPACE */
+#workspace-heading {
+  grid-area: heading;
 }
 
 /* MAIN WORKSPACE */
 
 #workspace {
+  display: flex;
   grid-area: workspace;
   height: 80vh;
 }
 
-#workspace__tabs-and-resources-div {}
+#workspace-tabs {
+  width: 600px;
+}
 
-#workspace__tabs {}
+#workspace-tabs__list {
+  list-style-type: none;
+}
 
-#workspace__resources {}
+/* #workspace-tabs__list-item {} */
+
+#workspace-resources {
+  width: 600px;
+}
+
+#workspace-resources__list {
+  list-style-type: none;
+}
+
+/* #workspace-resources__list-item {} */

@@ -1,5 +1,6 @@
+import "./footer.js"
 import "./keyPresses.js"
 import "./sessions.js"
-import "./settings.js"
 import "./tabs.js"
+import "./tabGroups.js"
 import "./window.js"

@@ -1,12 +1,12 @@
-import { refreshTabs } from "./tabs.js"
+import { refreshDsmTabs } from "./tabs.js"
 import { fetchSessions } from "./sessions.js"
 
 window.addEventListener('focus', () => {
-  refreshTabs()
+  refreshDsmTabs()
   fetchSessions()
 })
 
 window.addEventListener('load', () => {
-  refreshTabs()
+  refreshDsmTabs()
   fetchSessions()
 })

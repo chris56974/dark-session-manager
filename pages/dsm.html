@@ -11,21 +11,20 @@
     <main id="layout">
       <div id="sidebar">
         <h1>DSM</h1>
-        <div id="current-tabs-div">
+        <div id="sidebar-tabs">
           <h2>
-            Current Tabs 🌌
-            <button id="clear-tabs-btn">Clear</button>
+            Current Tabs
+            <button id="sidebar-tabs__clear-btn">Clear</button>
           </h2>
-          <ul id="current-tab-list"></ul>
+          <ul id="sidebar-tabs__list"></ul>
         </div>
-        <div id="sessions-div">
+        <div id="sidebar-sessions">
           <h2>
-            Sessions 📑
-            <input id="save-session-input" type="text" />
-            </datalist>
-            <button id="save-session-btn">Save</button>
+            Sessions
+            <input id="sidebar-sessions__new-session-input" type="text" />
+            <button id="sidebar-sessions__new-session-btn">New</button>
           </h2>
-          <ul id="saved-session-list"><ul/>
+          <ul id="sidebar-sessions__list"></ul>
         </div>
         <footer>
           <a
@@ -33,26 +32,19 @@
             target="_blank"
             >Github</a
           >
-          <button id="settings-btn">⚙️</button>
-          <button id="clear-storage-btn">Clear chrome storage</button>
+          <button id="footer__settings-btn">⚙️</button>
+          <button id="footer__clear-storage-btn">Clear chrome storage</button>
         </footer>
       </div>
-      <h1 id="current-session-heading">Current Session</h1>
-      <nav id="nav">
-        <ul id="nav__ul">
-          <li class="nav__item">
-            <button class="nav__link">Tabs & Resources</button>
-          </li>
-          <span>/</span>
-          <li class="nav__item">
-            <button class="nav__link">Notes</button>
-          </li>
-        </ul>
-      </nav>
+      <h1 id="workspace-heading">Current Session</h1>
       <div id="workspace">
-        <div id="workspace__tabs-and-resources-div">
-          <div id="workspace__tabs"></div>
-          <div id="workspace__resources"></div>
+        <div id="workspace-tabs">
+          <h2>Tabs</h2>
+          <ul id="workspace-tabs__list"></ul>
+        </div>
+        <div id="workspace-resources">
+          <h2>Resources</h2>
+          <ul id="workspace-resources__list"></ul>
         </div>
       </div>
     </main>
