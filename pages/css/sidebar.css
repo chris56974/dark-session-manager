@@ -1,3 +1,25 @@
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  grid-area: sidebar;
+  background-color: var(--sidebar-bg-color);
+  height: 100vh;
+  padding-inline: 1vw;
+}
+
+#foo {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid red;
+}
+
+#sidebar-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 #sidebar-sessions {
   margin-bottom: auto;
 }

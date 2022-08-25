@@ -1,4 +1,3 @@
-const sidebarTabList = document.getElementById("sidebar-tabs__list");
 const workspaceTabList = document.getElementById("workspace-tabs__list")
 const clearTabsBtn = document.getElementById("sidebar-clear-btn");
 
@@ -17,8 +16,7 @@ async function clearTabsBtnHandler() {
 }
 
 function clearDsmTabs() {
-  while (sidebarTabList.firstChild) {
-    sidebarTabList.removeChild(sidebarTabList.lastChild)
+  while (workspaceTabList.firstChild) {
     workspaceTabList.removeChild(workspaceTabList.lastChild)
   }
 }
@@ -29,18 +27,16 @@ export async function refreshDsmTabs() {
   clearDsmTabs()
 
   for (let i = 1; i < tabs.length; i++) {
-    const sidebarTabEl = createSidebarTabEl(tabs[i])
-    const workspaceTabEl = createWorkspaceTabEl(tabs[i])
-    sidebarTabList.appendChild(sidebarTabEl)
-    workspaceTabList.appendChild(workspaceTabEl)
+    const tabEl = createTabEl(tabs[i])
+    workspaceTabList.appendChild(tabEl)
   }
 }
 
-function createEl(tab, className, preferredTitle = null) {
+export function createTabEl(tab, preferredTitle = null) {
   const tabTitle = preferredTitle ? preferredTitle : tab.title
   const tabElement = document.createElement("li")
   tabElement.id = tab.id
-  tabElement.className = className
+  tabElement.className = "workspace-tabs-list-item"
 
   const tabBtn = document.createElement('button')
   tabBtn.textContent = `${tabTitle.length > 0 ? tabTitle : "New Tab"}`
@@ -52,11 +48,9 @@ function createEl(tab, className, preferredTitle = null) {
   return tabElement
 }
 
-// These two elements are going to have different stuff appended to them later
-export function createSidebarTabEl(tab, preferredTitle = null) {
-  return createEl(tab, "sidebar-tabs__list-item", preferredTitle)
-}
+chrome.tabGroups.onUpdated.addListener(tabGroupHandler)
 
-export function createWorkspaceTabEl(tab, preferredTitle) {
-  return createEl(tab, "workspace-tabs__list-item", preferredTitle)
+async function tabGroupHandler(group) { 
+  console.log(group)
+  console.log("fired")
 }

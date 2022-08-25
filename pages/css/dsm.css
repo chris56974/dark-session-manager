@@ -23,8 +23,8 @@ body {
 #layout {
   display: grid;
   grid-template-areas:
-    "sidebar . . . . "
-    "sidebar workspace workspace workspace workspace "
-    "sidebar . . . ."
+    "sidebar workspace "
   ;
+
+  grid-template-columns: 20vw 80vw;
 }

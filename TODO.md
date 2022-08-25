@@ -1,17 +1,12 @@
-1. When the user changes between sessions the other ones should close (unless they use the link button)
+1. session folders ⏷
 
-- I need to check what sessions currently exist
-- Check what sessions I have changed
-- I should use groupIDs so I don't close the user's other groupTab by mistake
-- return arrow emoji? svg?
-
-2. link button
+2. 2 ways to open sessions (replace all tabs or add on)
 
 3. click and drag 
 
-4. "add resource", "close tab"
+4. tab element -> "add resource", "close tab"
 
-5. animations, highlighting
+5. animation, highlighting
 
 6. tabGroup.onUpdate() (control W exception)
   

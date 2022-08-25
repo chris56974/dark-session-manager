@@ -1,9 +1,8 @@
-import { refreshDsmTabs, createSidebarTabEl, createWorkspaceTabEl } from "./tabs.js"
+import { refreshDsmTabs, createTabEl } from "./tabs.js"
 
 const sessionList = document.getElementById("sidebar-sessions__list")
 const saveSessionBtn = document.getElementById("sidebar-sessions__new-session-btn")
 const saveSessionInput = document.getElementById("sidebar-sessions__new-session-input")
-const sidebarTabList = document.getElementById("sidebar-tabs__list");
 const workspaceTabList = document.getElementById("workspace-tabs__list")
 
 saveSessionBtn.addEventListener('click', saveSession)
@@ -121,9 +120,7 @@ async function openSession(sessionName) {
 
 export async function addSessionTabs(tabs, tabTitles) {
   tabs.forEach((tab, i) => {
-    const sidebarTabEl = createSidebarTabEl(tab, tabTitles[i])
-    const workspaceTabEl = createWorkspaceTabEl(tab, tabTitles[i])
-    sidebarTabList.appendChild(sidebarTabEl)
+    const workspaceTabEl = createTabEl(tab, tabTitles[i])
     workspaceTabList.appendChild(workspaceTabEl)
   })
 }

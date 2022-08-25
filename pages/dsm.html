@@ -5,44 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/dsm.css" />
-    <link rel="stylesheet" href="css/sidebar-tabs.css" />
-    <link rel="stylesheet" href="css/sidebar-sessions.css" />
-    <link rel="stylesheet" href="css/sidebar-footer.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/workspace.css" />
     <script src="js/dsm.js" type="module" defer></script>
   </head>
   <body>
     <main id="layout">
       <div id="sidebar">
-        <h1 id="sidebar-heading">
-          DSM
-          <button id="sidebar-clear-btn">Clear Tabs</button>
-        </h1>
-        <div id="sidebar-tabs">
-          <ul id="sidebar-tabs__list"></ul>
+        <div id="foo">
+          <h1>DSM</h1>
+          <h1>Logo</h1>
         </div>
-        <div id="sidebar-sessions">
-          <h2 id="sidebar-sessions-heading">
-            Sessions
-            <input id="sidebar-sessions__new-session-input" type="text" />
-            <span id="sidebar-sessions__dir-select">Dir</span>
-            <button id="sidebar-sessions__new-session-btn">New</button>
-          </h2>
-          <ul id="sidebar-sessions__list"></ul>
-        </div>
-        <footer>
-          <a
-            href="https://github.com/chris56974/dark-session-manager"
-            target="_blank"
-            >Github</a
-          >
-          <button id="footer__settings-btn">⚙️</button>
-          <button id="footer__clear-storage-btn">Clear chrome storage</button>
-        </footer>
+        <h2 id="new-session-heading">New Session</h2>
+        <input
+          class="new-session-input"
+          id="new-session-name-input"
+          type="text"
+          placeholder="Session Name"
+        />
+        <input
+          class="new-session-input"
+          id="new-session-folder-input"
+          type="text"
+          placeholder="Folder Name (optional)"
+        />
+        <datalist id="aaa">
+          <option value="a">a</option>
+        </datalist>
+        <ul id="sidebar-sessions__list"></ul>
       </div>
       <div id="workspace">
         <div id="workspace-tabs">
-          <h1 id="workspace-heading">Tabs</h1>
+          <h1 id="workspace-heading">
+            Tabs
+            <button id="sidebar-clear-btn">Clear Tabs</button>
+          </h1>
           <ul id="workspace-tabs__list"></ul>
         </div>
       </div>
