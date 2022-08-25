@@ -1,6 +1,6 @@
-chrome.tabGroups.onUpdated.addListener(tabGroupHandler)
+// chrome.tabGroups.onUpdated.addListener(tabGroupHandler)
 
-async function tabGroupHandler(group) { 
-  console.log(group)
-  console.log("fired")
-}
+// async function tabGroupHandler(group) { 
+//   console.log(group)
+//   console.log("fired")
+// }

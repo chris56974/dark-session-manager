@@ -1,5 +1,4 @@
 import { refreshDsmTabs, createSidebarTabEl, createWorkspaceTabEl } from "./tabs.js"
-import { tabGroupsDisabled } from "./footer.js"
 
 const sessionList = document.getElementById("sidebar-sessions__list")
 const saveSessionBtn = document.getElementById("sidebar-sessions__new-session-btn")
@@ -10,31 +9,28 @@ const workspaceTabList = document.getElementById("workspace-tabs__list")
 saveSessionBtn.addEventListener('click', saveSession)
 
 async function saveSession() {
-  const tabsWithDSM = await chrome.tabs.query({ currentWindow: true })
+  let tabs = await chrome.tabs.query({ currentWindow: true })
   const sessions = await chrome.storage.sync.get(null)
 
   // @ts-ignore
   const sessionName = saveSessionInput.value.toString()
-
-  const validationFailed = validateSession(tabsWithDSM, sessionName, sessions)
+  const validationFailed = validateSession(tabs, sessionName, sessions)
   if (validationFailed) return
 
   // @ts-ignore
   saveSessionInput.value = ""
 
-  const tabs = tabsWithDSM.slice(1)
+  // ERROR
+  tabs.splice(0, 1)
   const tabIds = tabs.map((tab) => tab.id)
-
-  if (!tabGroupsDisabled) {
-    var groupId = await chrome.tabs.group({ tabIds })
-    await chrome.tabGroups.update(groupId, {
-      color: "grey", // make this dynamic later
-      title: sessionName
-    })
-  }
-
   const tabUrls = tabs.map((tab) => tab.url)
   const tabTitles = tabs.map((tab) => tab.title)
+
+  const groupId = await chrome.tabs.group({ tabIds })
+  await chrome.tabGroups.update(groupId, {
+    color: "grey",
+    title: sessionName
+  })
 
   chrome.storage.sync.set({
     [sessionName]: {
@@ -75,23 +71,17 @@ function createSessionEl(sessionName) {
   sessionEl.id = sessionName
   sessionEl.className = "sidebar-sessions__list-item"
 
-  // Close out all other tabs and only open this session's tabs
   const openSessionBtn = document.createElement("button")
   openSessionBtn.innerText = `${sessionName}`
-  openSessionBtn.addEventListener('click', replaceTabsWithSession)
+  openSessionBtn.addEventListener('click', toggleSessionTabs(sessionName))
 
-  // Add this session on top of all other tabs
-  const sessionLinkBtn = document.createElement("button")
-  sessionLinkBtn.innerText = '🔗'
-  sessionLinkBtn.addEventListener('click', toggleSessionTabs(sessionName))
+  const deleteSessionBtn = document.createElement("button")
+  deleteSessionBtn.innerText = "🗑️"
+  deleteSessionBtn.addEventListener('click', deleteSessionHandler(sessionName))
 
   sessionEl.appendChild(openSessionBtn)
-  sessionEl.appendChild(sessionLinkBtn)
+  sessionEl.appendChild(deleteSessionBtn)
   return sessionEl
-}
-
-function replaceTabsWithSession(sessionName) {
-
 }
 
 function toggleSessionTabs(sessionName) {
@@ -103,7 +93,9 @@ function toggleSessionTabs(sessionName) {
 
 async function closeSession(sessionName) {
   const result = await chrome.storage.sync.get(sessionName)
-  await chrome.tabs.remove(result[sessionName].tabIds)
+  if (result[sessionName]) {
+    await chrome.tabs.remove(result[sessionName].tabIds)
+  }
   refreshDsmTabs()
 }
 
@@ -134,4 +126,12 @@ export async function addSessionTabs(tabs, tabTitles) {
     sidebarTabList.appendChild(sidebarTabEl)
     workspaceTabList.appendChild(workspaceTabEl)
   })
+}
+
+
+function deleteSessionHandler(sessionName) {
+  return async (_) => {
+    await chrome.storage.sync.remove(sessionName)
+    fetchSessions()
+  }
 }

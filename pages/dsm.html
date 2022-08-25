@@ -4,24 +4,28 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="dsm.css" />
+    <link rel="stylesheet" href="css/dsm.css" />
+    <link rel="stylesheet" href="css/sidebar-tabs.css" />
+    <link rel="stylesheet" href="css/sidebar-sessions.css" />
+    <link rel="stylesheet" href="css/sidebar-footer.css" />
+    <link rel="stylesheet" href="css/workspace.css" />
     <script src="js/dsm.js" type="module" defer></script>
   </head>
   <body>
     <main id="layout">
       <div id="sidebar">
-        <h1>DSM</h1>
+        <h1 id="sidebar-heading">
+          DSM
+          <button id="sidebar-clear-btn">Clear Tabs</button>
+        </h1>
         <div id="sidebar-tabs">
-          <h2>
-            Current Tabs
-            <button id="sidebar-tabs__clear-btn">Clear</button>
-          </h2>
           <ul id="sidebar-tabs__list"></ul>
         </div>
         <div id="sidebar-sessions">
-          <h2>
+          <h2 id="sidebar-sessions-heading">
             Sessions
             <input id="sidebar-sessions__new-session-input" type="text" />
+            <span id="sidebar-sessions__dir-select">Dir</span>
             <button id="sidebar-sessions__new-session-btn">New</button>
           </h2>
           <ul id="sidebar-sessions__list"></ul>
@@ -36,15 +40,10 @@
           <button id="footer__clear-storage-btn">Clear chrome storage</button>
         </footer>
       </div>
-      <h1 id="workspace-heading">Current Session</h1>
       <div id="workspace">
         <div id="workspace-tabs">
-          <h2>Tabs</h2>
+          <h1 id="workspace-heading">Tabs</h1>
           <ul id="workspace-tabs__list"></ul>
-        </div>
-        <div id="workspace-resources">
-          <h2>Resources</h2>
-          <ul id="workspace-resources__list"></ul>
         </div>
       </div>
     </main>

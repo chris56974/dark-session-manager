@@ -1,18 +1,22 @@
 const sidebarTabList = document.getElementById("sidebar-tabs__list");
 const workspaceTabList = document.getElementById("workspace-tabs__list")
-const clearTabsBtn = document.getElementById("sidebar-tabs__clear-btn");
+const clearTabsBtn = document.getElementById("sidebar-clear-btn");
 
 clearTabsBtn.addEventListener('click', clearTabsBtnHandler)
+
+chrome.tabs.onRemoved.addListener(() => {
+  refreshDsmTabs()
+})
 
 async function clearTabsBtnHandler() {
   const tabs = await chrome.tabs.query({ currentWindow: true })
   const tabIds = tabs.map((tab) => tab.id).slice(1)
   chrome.tabs.remove(tabIds)
 
-  clearTabs()
+  clearDsmTabs()
 }
 
-function clearTabs() {
+function clearDsmTabs() {
   while (sidebarTabList.firstChild) {
     sidebarTabList.removeChild(sidebarTabList.lastChild)
     workspaceTabList.removeChild(workspaceTabList.lastChild)
@@ -22,7 +26,7 @@ function clearTabs() {
 export async function refreshDsmTabs() {
   const tabs = await chrome.tabs.query({ currentWindow: true })
 
-  clearTabs()
+  clearDsmTabs()
 
   for (let i = 1; i < tabs.length; i++) {
     const sidebarTabEl = createSidebarTabEl(tabs[i])
@@ -32,11 +36,11 @@ export async function refreshDsmTabs() {
   }
 }
 
-export function createSidebarTabEl(tab, preferredTitle = null) {
+function createEl(tab, className, preferredTitle = null) {
   const tabTitle = preferredTitle ? preferredTitle : tab.title
   const tabElement = document.createElement("li")
   tabElement.id = tab.id
-  tabElement.className = "sidebar-tabs__list-item"
+  tabElement.className = className
 
   const tabBtn = document.createElement('button')
   tabBtn.textContent = `${tabTitle.length > 0 ? tabTitle : "New Tab"}`
@@ -48,18 +52,11 @@ export function createSidebarTabEl(tab, preferredTitle = null) {
   return tabElement
 }
 
+// These two elements are going to have different stuff appended to them later
+export function createSidebarTabEl(tab, preferredTitle = null) {
+  return createEl(tab, "sidebar-tabs__list-item", preferredTitle)
+}
+
 export function createWorkspaceTabEl(tab, preferredTitle) {
-  const tabTitle = preferredTitle ? preferredTitle : tab.title
-  const tabElement = document.createElement("li")
-  tabElement.id = tab.id
-  tabElement.className = "sidebar-tabs__list-item"
-
-  const tabBtn = document.createElement('button')
-  tabBtn.textContent = `${tabTitle.length > 0 ? tabTitle : "New Tab"}`
-  tabBtn.addEventListener('click', () => {
-    chrome.tabs.update(tab.id, { active: true })
-  })
-
-  tabElement.appendChild(tabBtn)
-  return tabElement
+  return createEl(tab, "workspace-tabs__list-item", preferredTitle)
 }

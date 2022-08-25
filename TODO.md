@@ -37,6 +37,4 @@
 
 17. one window only
 
-18. google translate extension
-
-19. tabs.onRemoved() 
+18. tabs.onRemoved() should update DOM 
