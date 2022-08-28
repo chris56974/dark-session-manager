@@ -22,6 +22,7 @@ DSM is a session manager inspired by [Workona](https://workona.com/). The emphas
 
 ## Resources
 
+
 ### Development
 - [query/restore tabs/windows](https://developer.chrome.com/docs/extensions/reference/sessions/)
 - [create, modify, rearrange tabs](https://developer.chrome.com/docs/extensions/reference/tabs/)

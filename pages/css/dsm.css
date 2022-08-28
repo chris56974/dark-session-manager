@@ -22,9 +22,22 @@ body {
 
 #layout {
   display: grid;
-  grid-template-areas:
-    "sidebar workspace "
-  ;
-
+  grid-template-areas: "sidebar workspace";
   grid-template-columns: 20vw 80vw;
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  grid-area: sidebar;
+  background-color: var(--sidebar-bg-color);
+  height: 100vh;
+  padding-inline: 1vw;
+}
+
+#title-and-logo-div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  font-size: 1rem;
 }

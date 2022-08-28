@@ -1,11 +1,9 @@
 const workspaceTabList = document.getElementById("workspace-tabs__list")
-const clearTabsBtn = document.getElementById("sidebar-clear-btn");
+const clearTabsBtn = document.getElementById("workspace-tabs__clear-btn");
 
 clearTabsBtn.addEventListener('click', clearTabsBtnHandler)
 
-chrome.tabs.onRemoved.addListener(() => {
-  refreshDsmTabs()
-})
+chrome.tabs.onRemoved.addListener(() => { refreshDsmTabs() })
 
 async function clearTabsBtnHandler() {
   const tabs = await chrome.tabs.query({ currentWindow: true })
@@ -36,7 +34,7 @@ export function createTabEl(tab, preferredTitle = null) {
   const tabTitle = preferredTitle ? preferredTitle : tab.title
   const tabElement = document.createElement("li")
   tabElement.id = tab.id
-  tabElement.className = "workspace-tabs-list-item"
+  tabElement.className = "workspace-tabs__list-item"
 
   const tabBtn = document.createElement('button')
   tabBtn.textContent = `${tabTitle.length > 0 ? tabTitle : "New Tab"}`
@@ -46,11 +44,4 @@ export function createTabEl(tab, preferredTitle = null) {
 
   tabElement.appendChild(tabBtn)
   return tabElement
-}
-
-chrome.tabGroups.onUpdated.addListener(tabGroupHandler)
-
-async function tabGroupHandler(group) { 
-  console.log(group)
-  console.log("fired")
 }

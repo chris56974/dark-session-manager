@@ -1,0 +1,45 @@
+#sessions-list {
+  list-style-type: none;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 3%;
+  scrollbar-width: thin;
+}
+
+.sessions-list-item {
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+  margin: 0 auto 9px auto;
+  border-radius: 5px;
+  background-color: transparent;
+  border-left: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.sessions-list-item:hover,
+.sessions-list-item:focus {
+  border-color: var(--main-txt-hover-color);
+  transition: border-color 0.2s;
+}
+
+.sessions-list-item>button {
+  color: var(--main-txt-color);
+  outline: none;
+  border: none;
+  width: 100%;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.2s, border-color 0.2s;
+  padding: 4px 0 4px 5px;
+}
+
+.sidebar-sessions__list-item>button:hover,
+.sidebar-sessions__list-item>button:focus {
+  color: red;
+}

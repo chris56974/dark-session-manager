@@ -1,0 +1,30 @@
+#new-session__color-btn {
+  position: relative;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: 9px solid #dadce0;
+  border-radius: 50%;
+  vertical-align: text-bottom;
+  transition: border-color 0.3s;
+}
+
+#color-grid {
+  display: flex;
+  position: absolute;
+  flex-wrap: wrap;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform .3s;
+}
+
+.color-cell {
+  flex: 0 0 32%;
+  width: 7em;
+  height: 20px;
+}
+
+.reveal-color-grid {
+  transform: translate(-50%, -50%) scale(1) !important;
+}

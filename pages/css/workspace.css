@@ -2,13 +2,15 @@
   display: flex;
   grid-area: workspace;
   height: 80vh;
+  place-self: center;
+  margin-right: 20vw;
 }
 
-#workspace-heading {
+#workspace-tabs__heading {
   margin-bottom: 4%;
 }
 
-#sidebar-clear-btn {
+#workspace-tabs__clear-btn {
   background-color: transparent;
   font-weight: bold;
   outline: none;
@@ -16,22 +18,23 @@
   color: var(--main-txt-color);
   cursor: pointer;
   height: min-content;
-  margin: auto 0 auto 4px;
+  margin: auto 0 auto 0;
   padding-left: 3px;
   border-left: 2px solid transparent;
   transition: color 0.2s, border-color 0.2s;
 }
 
-#sidebar-clear-btn:hover,
-#sidebar-clear-btn:focus {
+#workspace-tabs__clear-btn:hover,
+#workspace-tabs__clear-btn:focus {
   color: var(--main-txt-hover-color);
   border-color: var(--main-txt-hover-color);
   transition: color 0.2s, border-color 0.2s;
 }
 
 #workspace-tabs {
-  width: 35vw;
+  width: 45vw;
   height: 30vh;
+  
 }
 
 #workspace-tabs__list {
@@ -66,6 +69,5 @@
 .workspace-tabs__list-item>button:focus {
   color: var(--main-txt-hover-color);
   border-color: var(--main-txt-hover-color);
-  background-color: var(--sidebar-bg-highlight-color);
   transition: color 0.2s, border-color 0.2s, background-color 0.2s;
 }
