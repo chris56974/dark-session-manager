@@ -23,7 +23,6 @@
   },
   "permissions": [
     "sessions",
-    "contextMenus",
     "tabs",
     "tabGroups",
     "storage"

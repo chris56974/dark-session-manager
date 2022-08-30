@@ -1,6 +1,5 @@
 const colorButton = document.getElementById('new-session__color-btn')
 const colorGrid = document.getElementById('color-grid')
-const gridCells = document.getElementsByClassName('color-cell')
 
 colorButton.addEventListener('click', colorButtonhandler)
 colorGrid.addEventListener('click', colorGridHandler)
@@ -10,14 +9,19 @@ async function colorButtonhandler(event) {
   colorGrid.classList.toggle('reveal-color-grid')
 }
 
+/**
+ * Changes the color button to whatever the user picked
+ * @param {object} event 
+ */
 async function colorGridHandler(event) {
   const colorGridCell = event.target
   const selectedColor = colorGridCell.style.backgroundColor
   colorButton.style.borderColor = selectedColor
+  colorButton.dataset.selectedColor = colorGridCell.dataset.color
 }
 
 // These are the only colors chrome.tabGroups supports
-export function convertHexToColor(hex) {
+function convertHexToColor(hex) {
   switch (hex) {
     case "#dadce0": return "grey"
     case "#8ab4f8": return "blue"

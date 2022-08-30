@@ -2,7 +2,7 @@
 
 DSM is a session manager inspired by [Workona](https://workona.com/). The emphasis is not on work but on organized browsing. I don't plan on doing any cloud integrations (Figma, GCloud, Zoom), [universal search](https://workona.com/help/search/), [templates](https://workona.com/templates/),[mobile apps](https://workona.com/help/mobile-support/), etc. If you want all that, you should check out [Workona](https://workona.com/).
 
-## Features
+## Features (Some Planned)
 
 - Computer/Browser awareness for local file links
 - Tab groups for each workspace

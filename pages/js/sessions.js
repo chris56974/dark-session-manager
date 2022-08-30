@@ -1,5 +1,4 @@
 import { refreshDsmTabs } from "./tabs.js"
-import { convertHexToColor } from "./color.js"
 
 const colorBtn = document.getElementById("new-session__color-btn")
 const newSessionBtn = document.getElementById("new-session__submit-btn")
@@ -53,12 +52,11 @@ async function saveSession(event) {
 // }
 
 function getSessionColor() {
-  return window.getComputedStyle(colorBtn).borderColor
+  return colorBtn.dataset.selectedColor
 }
 
 async function createTabGroup(tabIds, sessionName, color) {
   const groupId = await chrome.tabs.group({ tabIds })
-  color = convertHexToColor(color)
   await chrome.tabGroups.update(groupId, {
     color,
     title: sessionName
@@ -72,7 +70,6 @@ function validateSession(tabs, sessions) {
   // @ts-ignore
   const folderName = sessionFolderInput.value.toString()
 
-  // kinda weird but I'll roll with it 🤷
   const { alert } = window
   if (tabs.length === 0) return ({ validSession: alert("Nothing to save"), sessionName, folderName })
   if (sessionName.length === 0) return ({ validSession: alert("No name provided"), sessionName, folderName })
