@@ -1,5 +1,12 @@
 {
+  "name": "dark-session-manager",
+  "author": "chris56974",
+  "version": "1.0.0",
+  "description": "Chrome extension used for organized web browsing",
+  "main": "index.js",
+  "scripts": {},
+  "license": "MIT",
   "devDependencies": {
-    "@types/chrome": "^0.0.193"
+    "@types/chrome": "^0.0.213"
   }
 }

@@ -1,0 +1,44 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+/* https://www.fluid-type-scale.com/calculate?minFontSize=16&minWidth=801&minRatio=1.25&maxFontSize=19&maxWidth=1920&maxRatio=1.333&steps=sm%2Cbase%2Cmd%2Clg%2Cxl%2Cxxl%2Cxxxl&baseStep=base&prefix=font-size&decimals=2&useRems=on&remValue=16&previewFont=Inter */
+:root {
+  --font-size-sm: clamp(0.8rem, 0.13vw + 0.73rem, 0.89rem);
+  --font-size-base: clamp(1rem, 0.27vw + 0.87rem, 1.19rem);
+  --font-size-md: clamp(1.25rem, 0.48vw + 1.01rem, 1.58rem);
+  --font-size-lg: clamp(1.56rem, 0.78vw + 1.17rem, 2.11rem);
+  --font-size-xl: clamp(1.95rem, 1.23vw + 1.34rem, 2.81rem);
+  --font-size-xxl: clamp(2.44rem, 1.87vw + 1.51rem, 3.75rem);
+  --font-size-xxxl: clamp(3.05rem, 2.78vw + 1.66rem, 5rem);
+}
+
+body {
+  box-sizing: border-box;
+  background-color: hsl(200, 6%, 10%);
+  color: hsl(272, 90%, 76%);
+  /* hover color hsl(291, 95%, 75%); */
+}
+
+main {
+  display: grid;
+  grid-template-areas: "sidebar workspace";
+  grid-template-columns: 20vw 80vw;
+}
+
+#new-session-btn {
+  cursor: pointer;
+}
+
+#sessions-list {
+  list-style-type: none;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 3%;
+  scrollbar-width: thin;
+}

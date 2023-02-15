@@ -1,28 +1,47 @@
-const extensionURL = "chrome-extension://hhmaoaobfenfigibpjglhdelfdfnjnip/pages/dsm.html"
+/** 
+ * EVENT LISTENERS
+ */
+chrome.windows.onCreated.addListener(dsmInit)
 
-chrome.windows.onCreated.addListener(async () => {
-  const tabs = await chrome.tabs.query({ currentWindow: true })
-  if (tabs[0].url === extensionURL) return
-  chrome.tabs.create({
-    url: 'pages/dsm.html',
-    active: false,
-    pinned: true,
-    index: 0,
-  })
-})
+chrome.tabs.onAttached.addListener(moveDsmToEnd)
+chrome.tabs.onCreated.addListener(moveDsmToEnd)
+chrome.tabs.onMoved.addListener(moveDsmToEnd)
+chrome.tabs.onRemoved.addListener(closeDsmIfEmpty)
 
-chrome.action.onClicked.addListener(async () => {
-  const tabs = await chrome.tabs.query({ currentWindow: true })
-  if (tabs[0].url === extensionURL) return chrome.tabs.update(tabs[0].id, { active: true })
-  chrome.tabs.create({
-    url: 'pages/dsm.html',
-    active: false,
-    pinned: true,
-    index: 0,
-  })
-});
+chrome.commands.onCommand.addListener(navigateToDsm)
 
-// chrome.tabs.onRemoved.addListener(async () => {
-//   const tabs = await chrome.tabs.query({ currentWindow: true })
-//   if (tabs.length === 1 ) chrome.tabs.remove(tabs[0].id)
-// })
+/** 
+ * EVENT HANDLERS
+ */
+const chromeExtensionUrl = chrome.runtime.getURL('app/dsm.html')
+
+async function dsmInit() {
+  const { id, windowId } = await chrome.tabs.create({ url: 'app/dsm.html', active: false })
+  await chrome.storage.session.set({ [windowId]: id })
+}
+
+async function moveDsmToEnd() {
+  const { id: windowId } = await chrome.windows.getCurrent()
+  const result = await chrome.storage.session.get(`${windowId}`)
+  await chrome.tabs.move(result[windowId], { index: -1 })
+}
+
+async function navigateToDsm(command) {
+  if (command === "open-dsm") {
+    const tabs = await chrome.tabs.query({ currentWindow: true })
+    await chrome.tabs.update(tabs[tabs.length - 1].id, { active: true })
+  }
+}
+
+async function closeDsmIfEmpty() {
+  const [allTabs, [activeTab]] = await Promise.all([
+    chrome.tabs.query({ currentWindow: true }),
+    chrome.tabs.query({ active: true, currentWindow: true })
+  ])
+
+  if (allTabs.length === 1) chrome.tabs.remove(allTabs[0].id)
+
+  if (activeTab.id === allTabs[allTabs.length - 1].id) {
+    await chrome.tabs.update(allTabs[allTabs.length - 2].id, { active: true })
+  }
+}
