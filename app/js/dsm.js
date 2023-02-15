@@ -15,8 +15,8 @@ export const newSessionInput = document.getElementById("new-session-input")
 export const newSessionBtn = document.getElementById("new-session-btn")
 export const clearTabsBtn = document.getElementById("clear-tabs-btn")
 export const sessionList = document.getElementById("sessions-list")
-export const newSessionColorBtn = document.querySelector('new-session-color-btn')
-export const newSessionColorGrid = document.querySelector('new-session-color-grid')
+export const newSessionColorBtn = document.querySelector('.new-session-color-btn')
+export const newSessionColorGrid = document.querySelector('.new-session-color-grid')
 
 /** 
  * DOM EVENT LISTENERS
@@ -99,7 +99,7 @@ export async function refreshSessionsListInTheDom() {
   const result = await chrome.storage.sync.get('sessions')
 
   // @ts-ignore
-  for (const session in sessions) {
+  for (const session in result) {
     createAndAppendSessionElementToDom(session, result[session])
   }
 }

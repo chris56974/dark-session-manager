@@ -22,9 +22,11 @@ export async function removeAllChromeTabs() {
   const tabs = await chrome.tabs.query({ currentWindow: true })
 
   const tabIds = tabs
-    .splice(0, 1)
-    .map((tab) => tab.id)
+    .splice(0, tabs.length - 1) // keep dsm
+    .map((tab) => tab.id);
 
+  // dsm closes automatically if it's the only tab so I create a new one to stop that
+  chrome.tabs.create({ active: true });
   await chrome.tabs.remove(tabIds)
 }
 

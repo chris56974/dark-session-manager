@@ -30,11 +30,36 @@ main {
   grid-template-columns: 20vw 80vw;
 }
 
-#new-session-btn {
+.new-session-color-btn {
   cursor: pointer;
 }
 
-#sessions-list {
+.new-session-color-grid {
+  display: flex;
+  position: absolute;
+  flex-wrap: wrap;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s;
+}
+
+.color-cell {
+  /* doesn't grow or shrink, just stays at 32% */
+  flex: 0 0 32%;
+  width: 7em;
+  height: 20px;
+}
+
+.reveal-color-grid {
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+.new-session-btn {
+  cursor: pointer;
+}
+
+.sessions-list {
   list-style-type: none;
   text-overflow: ellipsis;
   overflow-x: hidden;

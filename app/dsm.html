@@ -10,26 +10,6 @@
 
     <!-- styles for my color button -->
     <style>
-      #color-grid {
-        display: flex;
-        position: absolute;
-        flex-wrap: wrap;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        transition: transform 0.3s;
-      }
-
-      .color-cell {
-        /* doesn't grow or shrink, just stays at 32% */
-        flex: 0 0 32%;
-        width: 7em;
-        height: 20px;
-      }
-
-      .reveal-color-grid {
-        transform: translate(-50%, -50%) scale(1) !important;
-      }
     </style>
 
     <!-- styles for my session-card -->
@@ -44,8 +24,8 @@
           autocomplete="off"
           type="text"
         />
-        <button id="new-session-color-btn" data-selected-color="">
-          <div id="color-grid">
+        <button class="new-session-color-btn" data-selected-color="">
+          <div class="new-session-color-grid">
             <div
               class="color-cell"
               style="background-color: #dadce0; border-top-left-radius: 5px"
