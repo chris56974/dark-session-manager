@@ -36,7 +36,7 @@ export async function replaceChromeTabsWithSessionTabs(sessionName) {
 
   await removeAllChromeTabs()
 
-  const result = await chrome.storage.sync.get(sessionName)
+  const result = await chrome.storage.local.get(sessionName)
   const { tabUrls, color } = result[sessionName]
 
   await createChromeTabs(tabUrls, sessionName, color)
@@ -46,23 +46,24 @@ export async function addSessionTabsToCurrentTabs(sessionName) {
   const tabGroups = await chrome.tabGroups.query({ title: sessionName })
   if (tabGroups.length === 1) return await removeTabGroup(tabGroups[0].id)
 
-  const result = await chrome.storage.sync.get(sessionName)
+  const result = await chrome.storage.local.get(sessionName)
   const { tabUrls, color } = result[sessionName]
 
   createChromeTabs(tabUrls, sessionName, color)
 }
 
 export async function createNewSessionInChromeStorage(newSessionName, newSessionColor) {
-  const [tabs, existingSessions] = await Promise.all([
+  const [tabs, { sessions: existingSessions }] = await Promise.all([
     chrome.tabs.query({ currentWindow: true }),
-    chrome.storage.sync.get('sessions')
+    chrome.storage.local.get(["sessions"])
   ])
 
+  console.log("existingSessions", existingSessions)
   if (tabs.length === 0) return alert("Nothing to save")
-  if (newSessionName in existingSessions) return alert("Session already exists")
+  if (existingSessions && newSessionName in existingSessions) return alert("Session already exists")
 
   const { tabIds, tabUrls, tabTitles } = tabs
-    .splice(0, 1)
+    .splice(0, tabs.length - 1) // grab all the tabs except DSM
     .reduce((acc, tab) => {
       acc.tabIds.push(tab.id);
       acc.tabUrls.push(tab.url);
@@ -72,13 +73,13 @@ export async function createNewSessionInChromeStorage(newSessionName, newSession
 
   createTabGroup(tabIds, newSessionName, newSessionColor)
 
-  await chrome.storage.sync.set({
+  await chrome.storage.local.set({
     sessions: {
       ...existingSessions,
       [newSessionName]: {
         tabUrls,
         tabTitles,
-        newSessionColor
+        color: newSessionColor
       }
     }
   })
@@ -88,10 +89,8 @@ export async function deleteSessionFromChromeStorage(sessionName) {
   if (!window.confirm("Are you sure?")) return
   const tabGroups = await chrome.tabGroups.query({ title: sessionName })
   if (tabGroups.length === 1) await removeTabGroup(tabGroups[0].id)
-  // const result = await chrome.storage.sync.get(sessionName)
-  // const session = result[sessionName]
 
-  await chrome.storage.sync.remove(sessionName)
+  await chrome.storage.local.remove(sessionName)
   refreshSessionsListInTheDom()
 }
 

@@ -11,17 +11,16 @@ import {
 /** 
  * DOM ELEMENTS
  */
-export const newSessionInput = document.getElementById("new-session-input")
-export const newSessionBtn = document.getElementById("new-session-btn")
-export const clearTabsBtn = document.getElementById("clear-tabs-btn")
-export const sessionList = document.getElementById("sessions-list")
+export const newSessionInput = document.querySelector(".new-session-input")
+export const newSessionBtn = document.querySelector(".new-session-btn")
+export const clearTabsBtn = document.querySelector(".clear-tabs-btn")
+export const sessionList = document.querySelector(".sessions-list")
 export const newSessionColorBtn = document.querySelector('.new-session-color-btn')
 export const newSessionColorGrid = document.querySelector('.new-session-color-grid')
 
 /** 
  * DOM EVENT LISTENERS
  */
-window.addEventListener('focus', () => { refreshSessionsListInTheDom() })
 window.addEventListener('load', () => { refreshSessionsListInTheDom() })
 
 document.addEventListener('keydown', keyboardCommands)
@@ -32,6 +31,7 @@ newSessionColorBtn.addEventListener('click', revealColorGrid)
 newSessionColorGrid.addEventListener('click', setNewSessionColor)
 
 newSessionBtn.addEventListener('click', createNewSession)
+
 
 /** 
  * DOM EVENT HANDLERS
@@ -65,7 +65,7 @@ export function setNewSessionColor(e) {
   // @ts-ignore
   newSessionColorBtn.dataset.selectedColor = colorGridCell.dataset.color
   // @ts-ignore
-  newSessionColorBtn.style.borderColor = selectedColor
+  newSessionColorBtn.style.backgroundColor = selectedColor
 }
 
 export async function createNewSession(e) {
@@ -87,7 +87,7 @@ export async function createNewSession(e) {
  */
 export async function prepareDomForTheNextSession() {
   // @ts-ignore
-  sessionNameInput.value = ""
+  newSessionInput.value = ""
 
   await refreshSessionsListInTheDom()
 }
@@ -96,28 +96,32 @@ export async function refreshSessionsListInTheDom() {
   while (sessionList.firstChild)
     sessionList.removeChild(sessionList.lastChild);
 
-  const result = await chrome.storage.sync.get('sessions')
+  const { sessions } = await chrome.storage.local.get(['sessions'])
 
   // @ts-ignore
-  for (const session in result) {
-    createAndAppendSessionElementToDom(session, result[session])
+  for (const sessionName in sessions) {
+    createAndAppendSessionElementToDom(sessionName, sessions[sessionName])
   }
 }
 
 export function createAndAppendSessionElementToDom(sessionName, session) {
   const sessionEl = document.createElement("li")
-  sessionEl.id = sessionName
   sessionEl.className = "sessions-list-item"
+  sessionEl.dataset.tabGroupColor = session.color
 
-  const replaceCurrentTabsWithSessionTabsBtn = document.createElement("button")
-  replaceCurrentTabsWithSessionTabsBtn.innerText = "Replace Current Tabs With Session Tabs 🔃"
-  replaceCurrentTabsWithSessionTabsBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))
-  sessionEl.appendChild(replaceCurrentTabsWithSessionTabsBtn)
+  const sessionTitleElement = document.createElement("h2")
+  sessionTitleElement.textContent = sessionName
+  sessionEl.appendChild(sessionTitleElement)
 
-  const addSessionTabsToCurrentTabsBtn = document.createElement("button")
-  addSessionTabsToCurrentTabsBtn.innerText = "Link session tabs onto current tabs 🔗"
-  addSessionTabsToCurrentTabsBtn.addEventListener('click', addClickHandler(addSessionTabsToCurrentTabs, sessionName))
-  sessionEl.appendChild(addSessionTabsToCurrentTabsBtn)
+  const replaceTabsWithSessionBtn = document.createElement("button")
+  replaceTabsWithSessionBtn.innerText = "Replace Current Tabs With Session Tabs 🔃"
+  replaceTabsWithSessionBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))
+  sessionEl.appendChild(replaceTabsWithSessionBtn)
+
+  const addSessionToTabsBtn = document.createElement("button")
+  addSessionToTabsBtn.innerText = "Link session tabs onto current tabs 🔗"
+  addSessionToTabsBtn.addEventListener('click', addClickHandler(addSessionTabsToCurrentTabs, sessionName))
+  sessionEl.appendChild(addSessionToTabsBtn)
 
   const deleteSessionBtn = document.createElement("button")
   deleteSessionBtn.innerText = "🗑️"
@@ -126,18 +130,34 @@ export function createAndAppendSessionElementToDom(sessionName, session) {
 
   const sessionTabsList = document.createElement('ul')
 
-  for (const tab of session.tabTitles.length) {
+  for (let i = 0; i < session.tabTitles.length; i++) {
     const tabElement = document.createElement('li')
-    const tabTitle = document.createElement('p')
-    const tabId = document.createElement('p')
+    const tabTitleElement = document.createElement('p')
+    const tabUrlElement = document.createElement('p')
 
-    tabTitle.textContent = session.tabTitle
-    tabId.textContent = session.tabId
+    tabTitleElement.textContent = session.tabTitles[i]
+    tabUrlElement.textContent = session.tabUrls[i]
 
-    tabElement.appendChild(tabTitle)
-    tabElement.appendChild(tab)
+    tabElement.appendChild(tabTitleElement)
+    tabElement.appendChild(tabUrlElement)
     sessionTabsList.appendChild(tabElement)
   }
 
+  sessionEl.appendChild(sessionTabsList)
   sessionList.appendChild(sessionEl)
 }
+
+
+/** 
+ * DEBUGGING
+ */
+export const revealStorageBtn = document.querySelector('.reveal-storage-btn')
+revealStorageBtn.addEventListener('click', async () => {
+  const foo = await chrome.storage.local.get(null)
+  console.log(foo)
+})
+
+export const clearStorageBtn = document.querySelector('.clear-storage-btn')
+clearStorageBtn.addEventListener('click', async () => {
+  await chrome.storage.local.clear()
+})

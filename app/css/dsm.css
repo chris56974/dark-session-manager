@@ -26,12 +26,15 @@ body {
 
 main {
   display: grid;
-  grid-template-areas: "sidebar workspace";
-  grid-template-columns: 20vw 80vw;
 }
 
 .new-session-color-btn {
+  /* relative for the grid */
+  position: relative;
   cursor: pointer;
+  height: 20px;
+  width: 20px;
+  background-color: #dadce0;
 }
 
 .new-session-color-grid {
@@ -64,6 +67,9 @@ main {
   text-overflow: ellipsis;
   overflow-x: hidden;
   overflow-y: auto;
-  margin-top: 3%;
   scrollbar-width: thin;
+}
+
+.sessions-list-item {
+  background-color: deepskyblue;
 }

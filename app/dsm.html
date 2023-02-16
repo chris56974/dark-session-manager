@@ -7,24 +7,17 @@
     <link rel="stylesheet" href="css/dsm.css" />
     <title>dsm</title>
     <script src="js/dsm.js" type="module" defer></script>
-
-    <!-- styles for my color button -->
-    <style>
-    </style>
-
-    <!-- styles for my session-card -->
-    <style></style>
   </head>
   <body>
     <main>
       <form>
         <input
-          id="new-session-input"
+          class="new-session-input"
           placeholder="New Session Name"
           autocomplete="off"
           type="text"
         />
-        <button class="new-session-color-btn" data-selected-color="">
+        <button class="new-session-color-btn" data-selected-color="grey">
           <div class="new-session-color-grid">
             <div
               class="color-cell"
@@ -73,10 +66,14 @@
             ></div>
           </div>
         </button>
-        <button id="new-session-btn">Create new session</button>
-        <button id="clear-tabs-btn">Clear Tabs</button>
+        <button class="new-session-btn">Create new session</button>
+        <button class="clear-tabs-btn">Clear Tabs</button>
       </form>
-      <ul id="sessions-list"></ul>
+      <ul class="sessions-list"></ul>
+      <div>
+        <button class="reveal-storage-btn">Reveal storage</button>
+        <button class="clear-storage-btn">Clear storage</button>
+      </div>
     </main>
   </body>
 </html>

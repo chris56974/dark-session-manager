@@ -39,9 +39,16 @@ async function closeDsmIfEmpty() {
     chrome.tabs.query({ active: true, currentWindow: true })
   ])
 
-  if (allTabs.length === 1) chrome.tabs.remove(allTabs[0].id)
+  // If DSM is the only tab left
+  if (allTabs.length === 1) {
+    if (!allTabs[0]) return
+    await chrome.tabs.remove(allTabs[0].id)
+  }
 
-  if (activeTab.id === allTabs[allTabs.length - 1].id) {
-    await chrome.tabs.update(allTabs[allTabs.length - 2].id, { active: true })
+  // If DSM is not the only tab left, focus the tab left of it
+  const dsmTab = allTabs[allTabs.length - 1]
+  if (dsmTab && activeTab.id === dsmTab.id) {
+    const dsmPreTab = allTabs[allTabs.length - 2]
+    if (dsmPreTab) await chrome.tabs.update(dsmPreTab.id, { active: true })
   }
 }
