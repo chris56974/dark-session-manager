@@ -36,18 +36,23 @@ export async function replaceChromeTabsWithSessionTabs(sessionName) {
 
   await removeAllChromeTabs()
 
-  const result = await chrome.storage.local.get(sessionName)
-  const { tabUrls, color } = result[sessionName]
+  const { sessions } = await chrome.storage.local.get('sessions')
+  const { tabUrls, color } = sessions[sessionName]
 
   await createChromeTabs(tabUrls, sessionName, color)
 }
 
 export async function addSessionTabsToCurrentTabs(sessionName) {
+  /** 
+   * The user might click addSessionTabs again if they want to get 
+   * a fresh tabgroup (because they deleted some tabs in that tab group)
+   * this deletes the existing tabGroup so that it can be recreated
+   */
   const tabGroups = await chrome.tabGroups.query({ title: sessionName })
-  if (tabGroups.length === 1) return await removeTabGroup(tabGroups[0].id)
+  if (tabGroups.length === 1) await removeTabGroup(tabGroups[0].id)
 
-  const result = await chrome.storage.local.get(sessionName)
-  const { tabUrls, color } = result[sessionName]
+  const { sessions } = await chrome.storage.local.get('sessions')
+  const { tabUrls, color } = sessions[sessionName]
 
   createChromeTabs(tabUrls, sessionName, color)
 }
@@ -55,7 +60,7 @@ export async function addSessionTabsToCurrentTabs(sessionName) {
 export async function createNewSessionInChromeStorage(newSessionName, newSessionColor) {
   const [tabs, { sessions: existingSessions }] = await Promise.all([
     chrome.tabs.query({ currentWindow: true }),
-    chrome.storage.local.get(["sessions"])
+    chrome.storage.local.get('sessions')
   ])
 
   console.log("existingSessions", existingSessions)

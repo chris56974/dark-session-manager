@@ -22,7 +22,8 @@ async function dsmInit() {
 
 async function moveDsmToEnd() {
   const { id: windowId } = await chrome.windows.getCurrent()
-  const result = await chrome.storage.session.get(`${windowId}`)
+  const result = await chrome.storage.session.get(windowId.toString())
+  if (!result[windowId]) return
   await chrome.tabs.move(result[windowId], { index: -1 })
 }
 

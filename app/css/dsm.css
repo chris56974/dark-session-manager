@@ -15,26 +15,42 @@
   --font-size-xl: clamp(1.95rem, 1.23vw + 1.34rem, 2.81rem);
   --font-size-xxl: clamp(2.44rem, 1.87vw + 1.51rem, 3.75rem);
   --font-size-xxxl: clamp(3.05rem, 2.78vw + 1.66rem, 5rem);
+
+  --dsm-width: 1000px;
+
+  --color-high: hsl(0, 0%, 87%);
+  --color-medium: hsl(0, 0%, 60%);
+  --color-low: hsl(0, 0%, 38%);
 }
 
 body {
   box-sizing: border-box;
   background-color: hsl(200, 6%, 10%);
-  color: hsl(272, 90%, 76%);
-  /* hover color hsl(291, 95%, 75%); */
+  font-size: var(--font-size-base);
+  color: var(--color-high);
 }
 
 main {
+  margin-inline: auto;
   display: grid;
+  width: var(--dsm-width);
+}
+
+form {
+  margin: 2% auto;
+  font-size: var(--font-size-lg);
 }
 
 .new-session-color-btn {
   /* relative for the grid */
   position: relative;
   cursor: pointer;
-  height: 20px;
-  width: 20px;
+  height: 100%;
+  width: 1ch;
   background-color: #dadce0;
+  border-radius: 2em;
+  border: none;
+  vertical-align: bottom;
 }
 
 .new-session-color-grid {
@@ -47,7 +63,7 @@ main {
   transition: transform 0.3s;
 }
 
-.color-cell {
+.new-session-color-grid-cell {
   /* doesn't grow or shrink, just stays at 32% */
   flex: 0 0 32%;
   width: 7em;
@@ -56,20 +72,65 @@ main {
 
 .reveal-color-grid {
   transform: translate(-50%, -50%) scale(1) !important;
+  z-index: 100;
 }
 
-.new-session-btn {
+.new-session-name-input {
+  background-color: grey;
+  color: var(--color-high);
+  border: none;
+  font-size: inherit;
+}
+
+.new-session-name-input::placeholder {
+  color: var(--color-high);
+}
+
+.create-new-session-btn {
   cursor: pointer;
+  background-color: transparent;
+  color: var(--color-high);
+  border: none;
+  font-size: larger;
 }
 
-.sessions-list {
+.clear-tabs-btn {
+  border: none;
+}
+
+/* SESSIONS */
+.sessions-grid {
+  border: 2px solid grey;
+  padding: 20px;
   list-style-type: none;
-  text-overflow: ellipsis;
-  overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
 }
 
-.sessions-list-item {
+.session-card {
   background-color: deepskyblue;
+  width: 200px;
 }
+
+.session-card-heading {
+}
+
+.session-card-tabs {
+  list-style: none;
+}
+
+.session-card-tab {
+  display: flex;
+}
+
+.session-card-tab__title {
+  font-size: var(--font-size-sm);
+}
+
+.session-card-tab__url {
+  text-overflow: ellipsis;
+}
+
+.replace-tabs-btn {}
+
+.add-tabs-btn {}

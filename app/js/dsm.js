@@ -7,36 +7,27 @@ import {
   deleteSessionFromChromeStorage,
 } from "./chromeApi.js"
 
-
 /** 
  * DOM ELEMENTS
  */
-export const newSessionInput = document.querySelector(".new-session-input")
-export const newSessionBtn = document.querySelector(".new-session-btn")
-export const clearTabsBtn = document.querySelector(".clear-tabs-btn")
-export const sessionList = document.querySelector(".sessions-list")
-export const newSessionColorBtn = document.querySelector('.new-session-color-btn')
-export const newSessionColorGrid = document.querySelector('.new-session-color-grid')
+const newSessionInput = document.querySelector(".new-session-name-input")
+const newSessionBtn = document.querySelector(".create-new-session-btn")
+const clearTabsBtn = document.querySelector(".clear-tabs-btn")
+const sessionGrid = document.querySelector(".sessions-grid")
+const newSessionColorBtn = document.querySelector('.new-session-color-btn')
+const newSessionColorGrid = document.querySelector('.new-session-color-grid')
 
 /** 
  * DOM EVENT LISTENERS
  */
 window.addEventListener('load', () => { refreshSessionsListInTheDom() })
-
 document.addEventListener('keydown', keyboardCommands)
-
 clearTabsBtn.addEventListener('click', removeAllChromeTabs)
-
 newSessionColorBtn.addEventListener('click', revealColorGrid)
 newSessionColorGrid.addEventListener('click', setNewSessionColor)
-
 newSessionBtn.addEventListener('click', createNewSession)
 
-
-/** 
- * DOM EVENT HANDLERS
- */
-export async function keyboardCommands(e) {
+async function keyboardCommands(e) {
   // Give me vimium like tab navigation for J and K
   if (e.key === "J" || e.key === "K") {
 
@@ -51,14 +42,25 @@ export async function keyboardCommands(e) {
   }
 }
 
-
-export function revealColorGrid(e) {
+function revealColorGrid(e) {
   e.preventDefault();
   newSessionColorGrid.classList.toggle('reveal-color-grid')
+  document.addEventListener('click', closeGridAndRemoveListener)
+}
+
+function closeGridAndRemoveListener(e) {
+  // if the user clicks outside the color grid, the color grid should close
+  if (newSessionColorBtn.contains(e.target)) return
+  newSessionColorGrid.classList.toggle('reveal-color-grid')
+  document.removeEventListener('click', closeGridAndRemoveListener)
 }
 
 export function setNewSessionColor(e) {
-  e.preventDefault();
+  // stopPropagation to stop revealColorGrid() from getting called 
+  // Because this color grid is inside the button that revealed it
+  e.preventDefault()
+  e.stopPropagation()
+
   const colorGridCell = e.target
   const selectedColor = colorGridCell.style.backgroundColor
 
@@ -66,6 +68,9 @@ export function setNewSessionColor(e) {
   newSessionColorBtn.dataset.selectedColor = colorGridCell.dataset.color
   // @ts-ignore
   newSessionColorBtn.style.backgroundColor = selectedColor
+
+  newSessionColorGrid.classList.toggle('reveal-color-grid')
+  document.removeEventListener('click', closeGridAndRemoveListener)
 }
 
 export async function createNewSession(e) {
@@ -93,8 +98,8 @@ export async function prepareDomForTheNextSession() {
 }
 
 export async function refreshSessionsListInTheDom() {
-  while (sessionList.firstChild)
-    sessionList.removeChild(sessionList.lastChild);
+  while (sessionGrid.firstChild)
+    sessionGrid.removeChild(sessionGrid.lastChild);
 
   const { sessions } = await chrome.storage.local.get(['sessions'])
 
@@ -105,48 +110,48 @@ export async function refreshSessionsListInTheDom() {
 }
 
 export function createAndAppendSessionElementToDom(sessionName, session) {
-  const sessionEl = document.createElement("li")
-  sessionEl.className = "sessions-list-item"
+  const sessionEl = document.createElement("div")
+  sessionEl.setAttribute('role', 'article')
+  sessionEl.className = "session-card"
   sessionEl.dataset.tabGroupColor = session.color
 
-  const sessionTitleElement = document.createElement("h2")
-  sessionTitleElement.textContent = sessionName
-  sessionEl.appendChild(sessionTitleElement)
+  const { tabTitles, tabUrls } = session
 
-  const replaceTabsWithSessionBtn = document.createElement("button")
-  replaceTabsWithSessionBtn.innerText = "Replace Current Tabs With Session Tabs 🔃"
-  replaceTabsWithSessionBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))
-  sessionEl.appendChild(replaceTabsWithSessionBtn)
+  sessionEl.innerHTML = `
+    <h2 class="session-card-heading">${sessionName}</h2>
 
-  const addSessionToTabsBtn = document.createElement("button")
-  addSessionToTabsBtn.innerText = "Link session tabs onto current tabs 🔗"
-  addSessionToTabsBtn.addEventListener('click', addClickHandler(addSessionTabsToCurrentTabs, sessionName))
-  sessionEl.appendChild(addSessionToTabsBtn)
+    <button class="delete-session-btn">🗑️</button>
 
-  const deleteSessionBtn = document.createElement("button")
-  deleteSessionBtn.innerText = "🗑️"
+    <ul class="session-card-tabs">
+      ${tabTitles[0] ?
+      `<li class="session-card-tab">
+        <a class="session-card-tab__url" href="${tabUrls[0]}" target="_blank">${tabTitles[0]}</a>
+      </li>` : ``}
+      ${tabTitles[1] ?
+      `<li class="session-card-tab">
+        <a class="session-card-tab__url" href="${tabUrls[1]}" target="_blank">${tabTitles[1]}</a>
+      </li>` : ``}
+      ${tabTitles[2] ?
+      `<li class="session-card-tab">
+        <a class="session-card-tab__url" href="${tabUrls[2]}" target="_blank">${tabTitles[2]}</a>
+      </li>` : ``}
+    </ul>
+    
+    <button class="replace-tabs-btn">Replace Tabs 🔃</button>
+    <button class="add-tabs-btn">Add Tabs 🔗</button>
+  `
+
+  const deleteSessionBtn = sessionEl.querySelector('.delete-session-btn')
+  const replaceTabsBtn = sessionEl.querySelector('.replace-tabs-btn')
+  const addTabsBtn = sessionEl.querySelector('.add-tabs-btn')
+
   deleteSessionBtn.addEventListener('click', addClickHandler(deleteSessionFromChromeStorage, sessionName))
-  sessionEl.appendChild(deleteSessionBtn)
+  replaceTabsBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))
+  addTabsBtn.addEventListener('click', addClickHandler(addSessionTabsToCurrentTabs, sessionName))
 
-  const sessionTabsList = document.createElement('ul')
-
-  for (let i = 0; i < session.tabTitles.length; i++) {
-    const tabElement = document.createElement('li')
-    const tabTitleElement = document.createElement('p')
-    const tabUrlElement = document.createElement('p')
-
-    tabTitleElement.textContent = session.tabTitles[i]
-    tabUrlElement.textContent = session.tabUrls[i]
-
-    tabElement.appendChild(tabTitleElement)
-    tabElement.appendChild(tabUrlElement)
-    sessionTabsList.appendChild(tabElement)
-  }
-
-  sessionEl.appendChild(sessionTabsList)
-  sessionList.appendChild(sessionEl)
+  // sessionGrid was query selected earlier on line 17
+  sessionGrid.appendChild(sessionEl)
 }
-
 
 /** 
  * DEBUGGING
