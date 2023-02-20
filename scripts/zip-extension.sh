@@ -1,0 +1,1 @@
+zip -r DsmExtension.zip app/ manifest.json

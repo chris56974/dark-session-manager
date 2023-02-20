@@ -1,52 +1,63 @@
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-}
-
 /* https://www.fluid-type-scale.com/calculate?minFontSize=16&minWidth=801&minRatio=1.25&maxFontSize=19&maxWidth=1920&maxRatio=1.333&steps=sm%2Cbase%2Cmd%2Clg%2Cxl%2Cxxl%2Cxxxl&baseStep=base&prefix=font-size&decimals=2&useRems=on&remValue=16&previewFont=Inter */
 :root {
-  --font-size-sm: clamp(0.8rem, 0.13vw + 0.73rem, 0.89rem);
-  --font-size-base: clamp(1rem, 0.27vw + 0.87rem, 1.19rem);
-  --font-size-md: clamp(1.25rem, 0.48vw + 1.01rem, 1.58rem);
-  --font-size-lg: clamp(1.56rem, 0.78vw + 1.17rem, 2.11rem);
-  --font-size-xl: clamp(1.95rem, 1.23vw + 1.34rem, 2.81rem);
-  --font-size-xxl: clamp(2.44rem, 1.87vw + 1.51rem, 3.75rem);
-  --font-size-xxxl: clamp(3.05rem, 2.78vw + 1.66rem, 5rem);
+  --font-size-sm: clamp(0.8rem, 0.06vw + 0.77rem, 0.84rem);
+  --font-size-base: clamp(1rem, 0.16vw + 0.93rem, 1.13rem);
+  --font-size-md: clamp(1.25rem, 0.33vw + 1.11rem, 1.5rem);
+  --font-size-lg: clamp(1.56rem, 0.57vw + 1.31rem, 2rem);
+  --font-size-xl: clamp(1.95rem, 0.93vw + 1.54rem, 2.66rem);
+  --font-size-xxl: clamp(2.44rem, 1.46vw + 1.8rem, 3.55rem);
+  --font-size-xxxl: clamp(3.05rem, 2.21vw + 2.09rem, 4.73rem);
 
   --dsm-width: 1000px;
 
   --color-high: hsl(0, 0%, 87%);
   --color-medium: hsl(0, 0%, 60%);
   --color-low: hsl(0, 0%, 38%);
+
+  --primary: #BB86FC;
+  --primary-variant: #3700B3;
+  --secondary: #03DAC6;
+
+  --background-color: hsl(0deg 0% 7%);
+  --session-background-color: hsl(0deg 0% 9%);
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  background-color: hsl(200, 6%, 10%);
+  background-color: var(--background-color);
   font-size: var(--font-size-base);
   color: var(--color-high);
 }
 
+button {
+  cursor: pointer;
+  color: var(--color-high);
+  background-color: transparent;
+  border: none;
+}
+
 main {
-  margin-inline: auto;
-  display: grid;
+  margin: 2% auto;
   width: var(--dsm-width);
 }
 
 form {
-  margin: 2% auto;
+  width: fit-content;
   font-size: var(--font-size-lg);
+  margin: 0 auto 2% auto;
 }
 
 .new-session-color-btn {
   /* relative for the grid */
   position: relative;
-  cursor: pointer;
-  height: 100%;
-  width: 1ch;
   background-color: #dadce0;
   border-radius: 2em;
   border: none;
@@ -76,10 +87,10 @@ form {
 }
 
 .new-session-name-input {
+  font-size: inherit;
   background-color: grey;
   color: var(--color-high);
   border: none;
-  font-size: inherit;
 }
 
 .new-session-name-input::placeholder {
@@ -87,11 +98,10 @@ form {
 }
 
 .create-new-session-btn {
-  cursor: pointer;
+  font-size: larger;
   background-color: transparent;
   color: var(--color-high);
   border: none;
-  font-size: larger;
 }
 
 .clear-tabs-btn {
@@ -100,37 +110,22 @@ form {
 
 /* SESSIONS */
 .sessions-grid {
-  border: 2px solid grey;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 20px;
+
   padding: 20px;
+  height: 80vh;
+
+  border: 2px solid grey;
+  border-radius: 25px;
+
   list-style-type: none;
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 
-.session-card {
-  background-color: deepskyblue;
-  width: 200px;
+
+/* BUTTONS */
+.settings-btn {
+  margin-left: auto;
 }
-
-.session-card-heading {
-}
-
-.session-card-tabs {
-  list-style: none;
-}
-
-.session-card-tab {
-  display: flex;
-}
-
-.session-card-tab__title {
-  font-size: var(--font-size-sm);
-}
-
-.session-card-tab__url {
-  text-overflow: ellipsis;
-}
-
-.replace-tabs-btn {}
-
-.add-tabs-btn {}

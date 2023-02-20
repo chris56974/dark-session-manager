@@ -5,7 +5,7 @@ export function addClickHandler(eventHandler, ...args) {
   };
 }
 
-// in case I use this somehow later
+// In case I need this later
 export const tabGroupColors = {
   grey: "#dadce0",
   blue: "#8ab4f8",

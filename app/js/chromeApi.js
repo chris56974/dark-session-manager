@@ -1,6 +1,6 @@
 import {
   refreshSessionsListInTheDom,
-} from "./dsm.js"
+} from "./dom.js"
 
 /** 
  * These functions don't have anything to do with the DOM 
@@ -65,7 +65,7 @@ export async function createNewSessionInChromeStorage(newSessionName, newSession
 
   console.log("existingSessions", existingSessions)
   if (tabs.length === 0) return alert("Nothing to save")
-  if (existingSessions && newSessionName in existingSessions) return alert("Session already exists")
+  if (existingSessions && newSessionName in existingSessions) return alert(`The session ${newSessionName} already exists`)
 
   const { tabIds, tabUrls, tabTitles } = tabs
     .splice(0, tabs.length - 1) // grab all the tabs except DSM

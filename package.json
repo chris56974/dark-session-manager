@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "description": "Chrome extension used for organized web browsing",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "zip": "./scripts/zip-extension.sh"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/chrome": "^0.0.213"

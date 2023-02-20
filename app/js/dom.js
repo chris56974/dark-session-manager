@@ -57,7 +57,7 @@ function closeGridAndRemoveListener(e) {
 
 export function setNewSessionColor(e) {
   // stopPropagation to stop revealColorGrid() from getting called 
-  // Because this color grid is inside the button that revealed it
+  // because this color grid is inside the button that revealed it
   e.preventDefault()
   e.stopPropagation()
 
@@ -110,35 +110,24 @@ export async function refreshSessionsListInTheDom() {
 }
 
 export function createAndAppendSessionElementToDom(sessionName, session) {
-  const sessionEl = document.createElement("div")
-  sessionEl.setAttribute('role', 'article')
-  sessionEl.className = "session-card"
-  sessionEl.dataset.tabGroupColor = session.color
-
   const { tabTitles, tabUrls } = session
 
-  sessionEl.innerHTML = `
-    <h2 class="session-card-heading">${sessionName}</h2>
+  const sessionEl = document.createElement("session-card")
+  sessionEl.dataset.color = session.color
 
-    <button class="delete-session-btn">🗑️</button>
-
-    <ul class="session-card-tabs">
-      ${tabTitles[0] ?
-      `<li class="session-card-tab">
-        <a class="session-card-tab__url" href="${tabUrls[0]}" target="_blank">${tabTitles[0]}</a>
+  const tabsList = session.querySelector('session-card-tabs')
+  tabsList.innerHTML = `
+     ${tabTitles[0] ?  `<li class="session-tab">
+        <a class="session-tab__title" href="${tabUrls[0]}" target="_blank">${tabTitles[0]}</a>
       </li>` : ``}
       ${tabTitles[1] ?
-      `<li class="session-card-tab">
-        <a class="session-card-tab__url" href="${tabUrls[1]}" target="_blank">${tabTitles[1]}</a>
+      `<li class="session-tab">
+        <a class="session-tab__title" href="${tabUrls[1]}" target="_blank">${tabTitles[1]}</a>
       </li>` : ``}
       ${tabTitles[2] ?
-      `<li class="session-card-tab">
-        <a class="session-card-tab__url" href="${tabUrls[2]}" target="_blank">${tabTitles[2]}</a>
+      `<li class="session-tab">
+        <a class="session-tab__title" href="${tabUrls[2]}" target="_blank">${tabTitles[2]}</a>
       </li>` : ``}
-    </ul>
-    
-    <button class="replace-tabs-btn">Replace Tabs 🔃</button>
-    <button class="add-tabs-btn">Add Tabs 🔗</button>
   `
 
   const deleteSessionBtn = sessionEl.querySelector('.delete-session-btn')
