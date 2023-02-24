@@ -1,4 +1,5 @@
 import { addClickHandler } from "./utility.js"
+import { ColorButton, SessionCard } from "./components/index.js"
 import {
   removeAllChromeTabs,
   replaceChromeTabsWithSessionTabs,
@@ -7,6 +8,9 @@ import {
   deleteSessionFromChromeStorage,
 } from "./chromeApi.js"
 
+customElements.define('color-btn', ColorButton)
+customElements.define('session-card', SessionCard)
+
 /** 
  * DOM ELEMENTS
  */
@@ -14,8 +18,8 @@ const newSessionInput = document.querySelector(".new-session-name-input")
 const newSessionBtn = document.querySelector(".create-new-session-btn")
 const clearTabsBtn = document.querySelector(".clear-tabs-btn")
 const sessionGrid = document.querySelector(".sessions-grid")
-const newSessionColorBtn = document.querySelector('.new-session-color-btn')
-const newSessionColorGrid = document.querySelector('.new-session-color-grid')
+const newSessionColorBtn = document.querySelector("color-btn")
+const newSessionColorGrid = newSessionColorBtn.shadowRoot.querySelector('.new-session-color-grid')
 
 /** 
  * DOM EVENT LISTENERS
@@ -23,8 +27,6 @@ const newSessionColorGrid = document.querySelector('.new-session-color-grid')
 window.addEventListener('load', () => { refreshSessionsListInTheDom() })
 document.addEventListener('keydown', keyboardCommands)
 clearTabsBtn.addEventListener('click', removeAllChromeTabs)
-newSessionColorBtn.addEventListener('click', revealColorGrid)
-newSessionColorGrid.addEventListener('click', setNewSessionColor)
 newSessionBtn.addEventListener('click', createNewSession)
 
 async function keyboardCommands(e) {
@@ -40,37 +42,6 @@ async function keyboardCommands(e) {
       chrome.tabs.update(tabs[tabs.length - 2].id, { active: true }) :
       chrome.tabs.update(tabs[0].id, { active: true })
   }
-}
-
-function revealColorGrid(e) {
-  e.preventDefault();
-  newSessionColorGrid.classList.toggle('reveal-color-grid')
-  document.addEventListener('click', closeGridAndRemoveListener)
-}
-
-function closeGridAndRemoveListener(e) {
-  // if the user clicks outside the color grid, the color grid should close
-  if (newSessionColorBtn.contains(e.target)) return
-  newSessionColorGrid.classList.toggle('reveal-color-grid')
-  document.removeEventListener('click', closeGridAndRemoveListener)
-}
-
-export function setNewSessionColor(e) {
-  // stopPropagation to stop revealColorGrid() from getting called 
-  // because this color grid is inside the button that revealed it
-  e.preventDefault()
-  e.stopPropagation()
-
-  const colorGridCell = e.target
-  const selectedColor = colorGridCell.style.backgroundColor
-
-  // @ts-ignore
-  newSessionColorBtn.dataset.selectedColor = colorGridCell.dataset.color
-  // @ts-ignore
-  newSessionColorBtn.style.backgroundColor = selectedColor
-
-  newSessionColorGrid.classList.toggle('reveal-color-grid')
-  document.removeEventListener('click', closeGridAndRemoveListener)
 }
 
 export async function createNewSession(e) {
@@ -115,9 +86,9 @@ export function createAndAppendSessionElementToDom(sessionName, session) {
   const sessionEl = document.createElement("session-card")
   sessionEl.dataset.color = session.color
 
-  const tabsList = session.querySelector('session-card-tabs')
+  const tabsList = sessionEl.shadowRoot.querySelector('.session-tabs')
   tabsList.innerHTML = `
-     ${tabTitles[0] ?  `<li class="session-tab">
+     ${tabTitles[0] ? `<li class="session-tab">
         <a class="session-tab__title" href="${tabUrls[0]}" target="_blank">${tabTitles[0]}</a>
       </li>` : ``}
       ${tabTitles[1] ?
@@ -130,9 +101,9 @@ export function createAndAppendSessionElementToDom(sessionName, session) {
       </li>` : ``}
   `
 
-  const deleteSessionBtn = sessionEl.querySelector('.delete-session-btn')
-  const replaceTabsBtn = sessionEl.querySelector('.replace-tabs-btn')
-  const addTabsBtn = sessionEl.querySelector('.add-tabs-btn')
+  const deleteSessionBtn = sessionEl.shadowRoot.querySelector('.delete-session-btn')
+  const replaceTabsBtn = sessionEl.shadowRoot.querySelector('.replace-tabs-btn')
+  const addTabsBtn = sessionEl.shadowRoot.querySelector('.add-tabs-btn')
 
   deleteSessionBtn.addEventListener('click', addClickHandler(deleteSessionFromChromeStorage, sessionName))
   replaceTabsBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))

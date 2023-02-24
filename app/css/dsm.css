@@ -50,42 +50,15 @@ main {
 }
 
 form {
-  width: fit-content;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
   font-size: var(--font-size-lg);
-  margin: 0 auto 2% auto;
 }
 
-.new-session-color-btn {
-  /* relative for the grid */
-  position: relative;
-  background-color: #dadce0;
-  border-radius: 2em;
-  border: none;
-  vertical-align: bottom;
-}
-
-.new-session-color-grid {
-  display: flex;
-  position: absolute;
-  flex-wrap: wrap;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.3s;
-}
-
-.new-session-color-grid-cell {
-  /* doesn't grow or shrink, just stays at 32% */
-  flex: 0 0 32%;
-  width: 7em;
-  height: 20px;
-}
-
-.reveal-color-grid {
-  transform: translate(-50%, -50%) scale(1) !important;
-  z-index: 100;
-}
-
+/* session inputs */
 .new-session-name-input {
   font-size: inherit;
   background-color: grey;

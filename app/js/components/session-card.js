@@ -2,11 +2,6 @@ export class SessionCard extends HTMLElement {
   color = ""
   name = ""
 
-
-  static get observedAttributes() {
-    return ['color']
-  }
-
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
@@ -14,7 +9,7 @@ export class SessionCard extends HTMLElement {
   }
 
   get css() {
-    return `
+    return /*html*/`
       <style>
         .session-card {
           background-color: dimgrey;
@@ -69,24 +64,23 @@ export class SessionCard extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = `
-    <article class="session-card">
+    this.shadowRoot.innerHTML = /*html*/`
+      ${this.css}
+      <article class="session-card">
+        <div class="session-content">
+          <div class="session-heading-container">
+            <h2 class="session-heading" style="${this.color}">${this.name}</h2>
+            <button class="delete-session-btn">🗑️</button>
+          </div>
 
-      <div class="session-content">
-        <div class="session-heading-container">
-          <h2 class="session-heading" style="${this.color}">${this.name}</h2>
-          <button class="delete-session-btn">🗑️</button>
+          <ul class="session-tabs"></ul>
         </div>
-
-        <ul class="session-tabs"></ul>
-      </div>
-      
-      <div class="tab-buttons">
-        <button class="replace-tabs-btn">Replace 🔃</button>
-        <button class="add-tabs-btn">Add 🔗</button>
-      <div>
-    </article>
+        
+        <div class="tab-buttons">
+          <button class="replace-tabs-btn">Replace 🔃</button>
+          <button class="add-tabs-btn">Add 🔗</button>
+        <div>
+      </article>
     `
   }
 }
-

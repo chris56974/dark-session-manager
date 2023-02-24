@@ -1,5 +1,8 @@
 // Make sure you turn this off so it doesn't screw with your CSS file
 {
+  "recommendations": [
+    "tobermory.es6-string-html"
+  ],
   "unwantedRecommendations": [
     "csstools.postcss"
   ]

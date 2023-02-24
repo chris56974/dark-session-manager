@@ -37,6 +37,12 @@ I used vanilla JS web components because I wanted DSM to be really fast. Vanilla
 
 Tab favicons. Settings modal.
 
+## Gotchas I ran into
+
+### bind(this) creates a new function everytime, making it difficult to remove event listeners
+
+I had to use this.method.bind(this) a couple times to make sure that `this` pointed to my web component and not the button that fired the event. What's interesting to note however, is that this.method.bind(this) will create a new function everytime it's called. So it will be impossible to remove that event listener unless you create a reference in the constructor.
+
 ## [License MIT](https://github.com/chris56974/dark-session-manager/LICENSE)
 
 ## Attribution
