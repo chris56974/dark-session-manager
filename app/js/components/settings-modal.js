@@ -32,11 +32,9 @@ class OneDialog extends HTMLElement {
     this.querySelector('.overlay').removeEventListener('click', this.close);
   }
 
-
   get open() {
     return this.hasAttribute('open');
   }
-
 
   set open(isOpen) {
     this.querySelector('.wrapper').classList.toggle('open', isOpen);

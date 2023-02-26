@@ -3,197 +3,78 @@ export class ColorButton extends HTMLElement {
     super()
     this.attachShadow({ mode: "open", delegatesFocus: true })
     this.render()
-    this.gridOpen = false
+
+    // grab elements
+    this.colorBtn = this.shadowRoot.querySelector('.color-btn')
+    this.colorGrid = this.shadowRoot.querySelector('.color-grid')
+    this.colorGridCells = this.shadowRoot.querySelectorAll('.color-grid button')
   }
 
-  connectedCallback() {
-    this.colorBtn = this.shadowRoot.querySelector('.new-session-color-btn')
-    this.colorGrid = this.shadowRoot.querySelector('.new-session-color-grid')
-    this.colorGridCells = this.shadowRoot.querySelectorAll('.new-session-color-grid-cell')
-
-    this.colorBtn.addEventListener('click', this.revealColorGrid.bind(this))
-    this.colorGrid.addEventListener('click', this.setNewSessionColor.bind(this))
-
-    this.closeColorGridOnClickRef = this.closeColorGridOnClick.bind(this)
-    this.closeColorGridOnEscRef = this.closeColorGridOnEsc.bind(this)
-  }
-
-  revealColorGrid(event) {
-    // preventDefault() to stop a parent form from sending
-    event.preventDefault()
-    // stopPropagation() to prevent the document from getting clicked too 
-    event.stopPropagation()
-
-    if (this.gridOpen) {
-      // close the grid
-      this.toggleGrid()
-      document.removeEventListener('click', this.closeColorGridOnClickRef)
-      document.removeEventListener('keydown', this.closeColorGridOnEscRef)
-    } else {
-      // open the grid
-      this.toggleGrid()
-      document.addEventListener('click', this.closeColorGridOnClickRef)
-      document.addEventListener('keydown', this.closeColorGridOnEscRef)
-    }
-  }
-
-  closeColorGridOnClick() {
-    this.toggleGrid()
-    document.removeEventListener('click', this.closeColorGridOnClickRef)
-    document.removeEventListener('keydown', this.closeColorGridOnEscRef)
-  }
-
-  closeColorGridOnEsc(event) {
-    if (event.key === "Escape") {
-      this.toggleGrid()
-      document.removeEventListener('click', this.closeColorGridOnClickRef)
-      document.removeEventListener('keydown', this.closeColorGridOnEscRef)
-    }
-  }
-
-  toggleGrid() {
-    if (this.gridOpen) {
-      // close the grid
-      this.gridOpen = !this.gridOpen
-      this.colorGrid.classList.toggle('reveal-color-grid')
-      console.log('close')
-      this.colorGridCells.forEach((element) => {
-        element.setAttribute('tabindex', '-1')
-      })
-    } else {
-      // open the grid
-      this.gridOpen = !this.gridOpen
-      this.colorGrid.classList.toggle('reveal-color-grid')
-      console.log('open')
-      this.colorGridCells.forEach((element) => {
-        element.setAttribute('tabindex', '0')
-      })
-    }
-  }
-
-  setNewSessionColor(event) {
-    event.preventDefault()
-
-    const selectedColor = event.target.style.backgroundColor
-
-    // @ts-ignore
-    this.colorBtn.dataset.selectedColor = selectedColor
-    // @ts-ignore
-    this.colorBtn.style.backgroundColor = selectedColor
-  }
-
-  get styles() {
+  get css() {
     return /*html*/`
       <style>
-        :host {
-          display: inline-block;
-        }
+        .color-btn {
+          display: grid;
+          justify-content: center;
+          align-content: center;
 
-        :host * {
-          box-sizing: border-box;
-        }
-
-        .new-session-color-btn {
-          /* relative for the grid */
-          position: relative;
-
-          height: 2em;
-          width: 2em; 
-          border-radius: 2em;
-
-          background-color: #dadce0;
-          border: none;
           cursor: pointer;
+          background-color: #dadce0;
+          width: 1em;
+          height: 1em;
+          border-radius: 2em;
+          position: relative;
         }
 
-        .new-session-color-grid {
-          /* reveal grid cells */
-          display: flex;
-          flex-wrap: wrap;
-
-          /* absolute for grid */
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) scale(0);
-
-          transition: transform 0.3s;
+        .color-grid {
+          display: inline-grid;
+          grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+          z-index: 100;
         }
 
-        .new-session-color-grid-cell {
-          /* They need to say at 32% of the grid width */
-          flex: 0 0 32%;
-          width: 7em;
-          height: 2em;
+        .color-grid button {
+          cursor: pointer;
+          height: 3em;
+          width: 3em;
+          border: none;
+          display: none;
         }
 
-        .reveal-color-grid {
-          transform: translate(-50%, -50%) scale(1) !important;
-          z-index: 100 !important;
-        }
-
-        .reveal-color-cells {
-          display: inline-block !important;
+        .reveal button {
+          display: inline-block;
         }
       </style>
     `
   }
 
-  get template() {
+  get html() {
+    // You can't nest a <button> in a <button>, so I had to use a div instead.
     return /*html*/`
-      <button class="new-session-color-btn" data-selected-color="grey">
-        <div class="new-session-color-grid">
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #dadce0; border-top-left-radius: 5px"
-            data-color="grey"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #8ab4f8"
-            data-color="blue"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #f28b82; border-top-right-radius: 5px"
-            data-color="red"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #fdd663"
-            data-color="yellow"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #81c995"
-            data-color="green"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #ff8bcb"
-            data-color="pink"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #c58af9; border-bottom-left-radius: 5px"
-            data-color="purple"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #78d9ec"
-            data-color="cyan"
-          ></div>
-          <div
-            class="new-session-color-grid-cell"
-            style="background-color: #fcad70; border-bottom-right-radius: 5px"
-            data-color="orange"
-          ></div>
-        </div>
-      </button>
+      <div class="color-btn" tabindex="0" role="button">
+        <div class="color-grid">
+          <button style="background-color: #dadce0; border-top-left-radius: 5px" data-color="grey"></button>
+          <button style="background-color: #8ab4f8;" data-color="blue" ></button> 
+          <button style="background-color: #f28b82; border-top-right-radius: 5px;" data-color="red"></button>
+          <button style="background-color: #fdd663;" data-color="yellow"></button>
+          <button style="background-color: #81c995;" data-color="green"></button>
+          <button style="background-color: #ff8bcb;" data-color="pink"></button>
+          <button style="background-color: #c58af9; border-bottom-left-radius: 5px;" data-color="purple"></button>
+          <button style="background-color: #78d9ec;" data-color="cyan"></button>
+          <button style="background-color: #fcad70; border-bottom-right-radius: 5px;" data-color="orange"></button>
+          </div>
+      </div>
     `
   }
 
   render() {
-    this.shadowRoot.innerHTML = `${this.styles}${this.template}`
+    this.shadowRoot.innerHTML = `${this.css}${this.html}`
+  }
+
+  connectedCallback() {
+    this.colorBtn.addEventListener('click', this.toggleGrid)
+  }
+
+  toggleGrid = () => {
+    this.colorGrid.classList.toggle('reveal')
   }
 }

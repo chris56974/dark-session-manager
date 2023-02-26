@@ -8,6 +8,9 @@ import {
   deleteSessionFromChromeStorage,
 } from "./chromeApi.js"
 
+/** 
+ * Web components
+ */
 customElements.define('color-btn', ColorButton)
 customElements.define('session-card', SessionCard)
 
