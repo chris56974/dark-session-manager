@@ -98,13 +98,14 @@ export class ColorButton extends HTMLElement {
 
     // if the grid is open
     if (firstGridCell.getAttribute('tabindex') === "0") {
+      document.removeEventListener('click', this.toggleGrid)
       gridCells.forEach((cell) => { cell.setAttribute('tabindex', '-1') })
       // @ts-ignore
       this.colorBtn.focus()
-    
-    // if the grid is closed
+
     } else {
       gridCells.forEach((cell) => { cell.setAttribute('tabindex', '0') })
+      document.addEventListener('click', this.toggleGrid)
     }
   }
 
