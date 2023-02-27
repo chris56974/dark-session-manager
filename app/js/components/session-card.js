@@ -5,7 +5,7 @@ export class SessionCard extends HTMLElement {
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
-    this.render()
+    this.shadowRoot.innerHTML = `${this.css}${this.html}`
   }
 
   get css() {
@@ -63,9 +63,8 @@ export class SessionCard extends HTMLElement {
     `
   }
 
-  render() {
-    this.shadowRoot.innerHTML = /*html*/`
-      ${this.css}
+  get html() {
+    return /*html*/`
       <article class="session-card">
         <div class="session-content">
           <div class="session-heading-container">

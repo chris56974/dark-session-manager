@@ -1,5 +1,3 @@
-'use strict';
-
 class OneDialog extends HTMLElement {
   static get observedAttributes() {
     return ['open'];

@@ -1,5 +1,5 @@
-/* https://www.fluid-type-scale.com/calculate?minFontSize=16&minWidth=801&minRatio=1.25&maxFontSize=19&maxWidth=1920&maxRatio=1.333&steps=sm%2Cbase%2Cmd%2Clg%2Cxl%2Cxxl%2Cxxxl&baseStep=base&prefix=font-size&decimals=2&useRems=on&remValue=16&previewFont=Inter */
 :root {
+  /* https://www.fluid-type-scale.com/calculate?minFontSize=16&minWidth=801&minRatio=1.25&maxFontSize=19&maxWidth=1920&maxRatio=1.333&steps=sm%2Cbase%2Cmd%2Clg%2Cxl%2Cxxl%2Cxxxl&baseStep=base&prefix=font-size&decimals=2&useRems=on&remValue=16&previewFont=Inter */
   --font-size-sm: clamp(0.8rem, 0.06vw + 0.77rem, 0.84rem);
   --font-size-base: clamp(1rem, 0.16vw + 0.93rem, 1.13rem);
   --font-size-md: clamp(1.25rem, 0.33vw + 1.11rem, 1.5rem);
@@ -56,7 +56,6 @@ form {
   align-content: center;
   width: 100%;
   font-size: var(--font-size-lg);
-  margin-top: 100px;
 }
 
 /* session inputs */
@@ -65,6 +64,9 @@ form {
   background-color: grey;
   color: var(--color-high);
   border: none;
+  margin-inline: 6%;
+  border-radius: 1em;
+  padding: 0.4em 1em;
 }
 
 .new-session-name-input::placeholder {

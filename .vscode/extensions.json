@@ -1,7 +1,9 @@
 // Make sure you turn this off so it doesn't screw with your CSS file
 {
   "recommendations": [
-    "tobermory.es6-string-html"
+    // this one also works but no intellisense
+    // "tobermory.es6-string-html",
+    "pushqrdx.inline-html"
   ],
   "unwantedRecommendations": [
     "csstools.postcss"
