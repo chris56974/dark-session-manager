@@ -10,7 +10,7 @@ export class ColorButton extends HTMLElement {
     this.shadowRoot.innerHTML = `${this.css}${this.html}`
 
     // grab elements
-    this.colorBtn = this.shadowRoot.querySelector('.color-btn')
+    this.colorBtn = this.shadowRoot.querySelector('#color-btn')
     this.colorGrid = this.shadowRoot.querySelector('.color-grid')
     this.colorGridCells = this.shadowRoot.querySelectorAll('.color-grid button')
     this.gridOpen = false
@@ -19,15 +19,17 @@ export class ColorButton extends HTMLElement {
   get css() {
     return /*html*/`
       <style>
-        .color-btn {
+        #color-btn {
           display: grid;
           justify-content: center;
           align-content: center;
 
           cursor: pointer;
           background-color: #dadce0;
-          width: 1em;
-          height: 1em;
+
+          width: 1.3em;
+          height: 1.3em;
+
           border-radius: 2em;
           position: relative;
 
@@ -47,8 +49,8 @@ export class ColorButton extends HTMLElement {
 
         .color-grid button {
           cursor: pointer;
-          height: 3em;
-          width: 3em;
+          height: 2.5em;
+          width: 2.5em;
           border: none;
         } 
 
@@ -64,17 +66,24 @@ export class ColorButton extends HTMLElement {
     // You can't nest a <button> in a <button>, so I had to use a div instead.
     return /*html*/`
     <div class="container" style="display: flex; align-items: center; height: 100%;">
-      <div class="color-btn" tabindex="0" role="button">
-        <div class="color-grid">
-          <button style="background-color: #dadce0; border-top-left-radius: 5px" data-color="grey" tabindex="-1"></button>
-          <button style="background-color: #8ab4f8;" data-color="blue" tabindex="-1"></button> 
-          <button style="background-color: #f28b82; border-top-right-radius: 5px;" data-color="red" tabindex="-1"></button>
-          <button style="background-color: #fdd663;" data-color="yellow" tabindex="-1"></button>
-          <button style="background-color: #81c995;" data-color="green" tabindex="-1"></button>
-          <button style="background-color: #ff8bcb;" data-color="pink" tabindex="-1"></button>
-          <button style="background-color: #c58af9; border-bottom-left-radius: 5px;" data-color="purple" tabindex="-1"></button>
-          <button style="background-color: #78d9ec;" data-color="cyan" tabindex="-1"></button>
-          <button style="background-color: #fcad70; border-bottom-right-radius: 5px;" data-color="orange" tabindex="-1"></button>
+      <div 
+        id="color-btn" 
+        tabindex="0" 
+        role="button" 
+        aria-haspopup="true" 
+        aria-expanded="${this.gridOpen}"
+        aria-label="Pick the color for your new session"
+      >
+        <div class="color-grid" aria-labelledby="color-btn">
+          <button style="background-color: #dadce0; border-top-left-radius: 5px" tabindex="-1" aria-label="grey"></button>
+          <button style="background-color: #8ab4f8;" tabindex="-1" aria-label="blue"></button> 
+          <button style="background-color: #f28b82; border-top-right-radius: 5px;" data-color="red" tabindex="-1" aria-label="red"></button>
+          <button style="background-color: #fdd663;" tabindex="-1" aria-label="yellow"></button>
+          <button style="background-color: #81c995;" tabindex="-1" aria-label="green"></button>
+          <button style="background-color: #ff8bcb;" tabindex="-1" aria-label="pink"></button>
+          <button style="background-color: #c58af9; border-bottom-left-radius: 5px;" tabindex="-1" aria-label="purple"></button>
+          <button style="background-color: #78d9ec;" tabindex="-1" aria-label="cyan"></button>
+          <button style="background-color: #fcad70; border-bottom-right-radius: 5px;" tabindex="-1" aria-label="orange"></button>
         </div>
       </div>
     </div>
@@ -99,13 +108,17 @@ export class ColorButton extends HTMLElement {
     // if the grid is open
     if (firstGridCell.getAttribute('tabindex') === "0") {
       document.removeEventListener('click', this.toggleGrid)
+      document.removeEventListener('keydown', this.toggleGridViaEscape)
+
       gridCells.forEach((cell) => { cell.setAttribute('tabindex', '-1') })
       // @ts-ignore
       this.colorBtn.focus()
-
+      this.gridOpen = false
     } else {
       gridCells.forEach((cell) => { cell.setAttribute('tabindex', '0') })
       document.addEventListener('click', this.toggleGrid)
+      document.addEventListener('keydown', this.toggleGridViaEscape)
+      this.gridOpen = true
     }
   }
 
@@ -113,9 +126,13 @@ export class ColorButton extends HTMLElement {
     if (event.key === 'Enter' || event.key === ' ') this.toggleGrid(event)
   }
 
+  toggleGridViaEscape = (event) => {
+    if (event.key === "Escape") this.toggleGrid(event)
+  }
+
   selectColor = (event) => {
     event.stopPropagation()
-    const chosenColor = event.target.dataset.color
+    const chosenColor = event.target.getAttribute('aria-label')
     const chosenColorCode = event.target.style.backgroundColor
 
     // @ts-ignore

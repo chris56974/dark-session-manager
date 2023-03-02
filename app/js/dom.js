@@ -17,12 +17,11 @@ customElements.define('session-card', SessionCard)
 /** 
  * DOM ELEMENTS
  */
-const newSessionInput = document.querySelector(".new-session-name-input")
-const newSessionBtn = document.querySelector(".create-new-session-btn")
+const newSessionInput = document.querySelector(".session-name-input")
+const newSessionBtn = document.querySelector(".create-session-btn")
 const clearTabsBtn = document.querySelector(".clear-tabs-btn")
 const sessionGrid = document.querySelector(".sessions-grid")
 const newSessionColorBtn = document.querySelector("color-btn")
-const newSessionColorGrid = newSessionColorBtn.shadowRoot.querySelector('.new-session-color-grid')
 
 /** 
  * DOM EVENT LISTENERS

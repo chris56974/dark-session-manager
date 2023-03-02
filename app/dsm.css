@@ -1,0 +1,99 @@
+:root {
+  --dsm-width: 1000px;
+
+  /* Colors */
+  --white-high: hsl(0, 0%, 87%);
+  --white-medium: hsl(0, 0%, 60%);
+  --white-low: hsl(0, 0%, 38%);
+
+  --primary: #BB86FC;
+  --primary-variant: #3700B3;
+  --secondary: #03DAC6;
+
+  --background-color: hsl(0deg 0% 7%);
+  --session-background-color: hsl(0deg 0% 9%);
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  box-sizing: border-box;
+  background-color: var(--background-color);
+  font-size: var(--font-size-base);
+  color: var(--white-high);
+}
+
+main {
+  margin: 2% auto;
+  width: var(--dsm-width);
+}
+
+form {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  font-size: 31px;
+  margin-bottom: 2%;
+}
+
+/* session inputs */
+.session-name-input {
+  font-size: inherit;
+  color: white;
+  background-color: grey;
+  border: none;
+  border-radius: 1em;
+  padding: 0.4em 1em;
+  margin-inline: 1em;
+}
+
+.session-name-input::placeholder {
+  color: white;
+}
+
+.create-session-btn {
+  font-size: larger;
+  background-color: transparent;
+  color: var(--white-high);
+  border: none;
+  border-radius: 50px;
+}
+
+/* SESSIONS */
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 20px;
+
+  padding: 20px;
+  height: 80vh;
+
+  border: 2px solid grey;
+  border-radius: 25px;
+
+  list-style-type: none;
+  overflow-y: auto;
+}
+
+/* BUTTONS */
+.settings-btn {
+  margin-left: auto;
+}
+
+button {
+  cursor: pointer;
+  color: var(--white-high);
+  background-color: transparent;
+  border: none;
+}
+
+.clear-tabs-btn {
+  border: none;
+}
