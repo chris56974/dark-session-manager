@@ -14,6 +14,7 @@ export class ColorButton extends HTMLElement {
     this.colorGrid = this.shadowRoot.querySelector('.color-grid')
     this.colorGridCells = this.shadowRoot.querySelectorAll('.color-grid button')
     this.gridOpen = false
+    this.setAttribute('color', 'grey')
   }
 
   get css() {
@@ -97,6 +98,13 @@ export class ColorButton extends HTMLElement {
     this.colorGrid.addEventListener('keydown', this.selectColorViaKeydown)
   }
 
+  disconnectedCallback() {
+    this.colorBtn.removeEventListener('click', this.toggleGrid)
+    this.colorBtn.removeEventListener('keydown', this.toggleGridViaKeydown)
+    this.colorGrid.removeEventListener('click', this.selectColor)
+    this.colorGrid.removeEventListener('keydown', this.selectColorViaKeydown)
+  }
+
   toggleGrid = (event) => {
     event.preventDefault()
     event.stopPropagation()
@@ -135,8 +143,7 @@ export class ColorButton extends HTMLElement {
     const chosenColor = event.target.getAttribute('aria-label')
     const chosenColorCode = event.target.style.backgroundColor
 
-    // @ts-ignore
-    this.colorBtn.dataset.color = chosenColor
+    this.setAttribute('color', chosenColor)
     // @ts-ignore
     this.colorBtn.style.backgroundColor = chosenColorCode
 

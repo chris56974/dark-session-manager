@@ -1,37 +1,38 @@
 export class SessionCard extends HTMLElement {
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
-    this.shadowRoot.innerHTML = `${this.css}${this.html}`
-    this.name = ""
-    this.color = ""
+    this.attachShadow({ mode: 'open', delegatesFocus: true })
+    this.render()
   }
 
   get css() {
     return /*html*/`
       <style>
         article {
-          background-color: grey;
+          display: flex;
+          flex-direction: column;
+          background-color: rgb(51 51 51);
           border-radius: 20px;
           height: 200px;
         }
 
-        .card-content {
+        .content {
           padding: 10px;
+          height: 60%;
         }
 
         .heading-div {
           display: flex; 
           align-items: center;
+          margin-bottom: 10px;
         }
 
         h2 {
           font-size: 24px;
-          color: white;
+          color: rgb(239, 239, 239);
           width: 10ch;
           white-space: nowrap;
           margin: 0;
-          vertical-align: center;
         }
 
         button {
@@ -50,27 +51,53 @@ export class SessionCard extends HTMLElement {
           font-size: 14px;
           padding: 0;
           margin: 0;
-          height: 100%;
           width: 20ch;
+          height: 60%;
+          width: 100%;
+          overflow-y: auto;
+        }
+
+        ul::-webkit-scrollbar {
+          width: .6em;
+          height: 90%;
+        }
+
+        ul::-webkit-scrollbar-thumb {
+          background-color: grey;
+          border-radius: 20em;
+
+        }
+
+        li {
+          padding-block: 2px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
 
-        .replace-tabs-btn {
-          width: 40%;
+        a {
+          color: cyan;
+        }
+
+        .session-btns {
           margin-top: auto;
+          height: 25%;
+        }
+
+        .replace-tabs-btn {
+          background-color: grey;
           border: none;
+          width: 49%;
           border-bottom-left-radius: 20px;
-          padding: 7px 0;
+          height: 100%;
         }
 
         .add-tabs-btn {
-          width: 40%;
-          margin-top: auto;
-          border-bottom-right-radius: 20px;
+          background-color: grey;
           border: none;
-          padding: 7px 0;
+          width: 49%;
+          border-bottom-right-radius: 20px;
+          height: 100%;
         }
       </style>
     `
@@ -78,15 +105,13 @@ export class SessionCard extends HTMLElement {
 
   get html() {
     return /*html*/`
-      <article class="card">
-        <div class="card-content">
+      <article>
+        <div class="content">
           <div class="heading-div">
-            <h2 style="color: ${this.color};">${this.name}</h2>
+            <h2>${this.name}</h2>
             <button class="delete-session-btn">🚮</button>
           </div>
-          <ul class="session-tabs">
-            ${this.posts}
-          </ul>
+          <ul>${this.tabListItems}</ul>
         </div>
         <div class="session-btns">
           <button class="replace-tabs-btn">🔄</button>
@@ -96,8 +121,31 @@ export class SessionCard extends HTMLElement {
     `
   }
 
-  // this is set from outside the web component
-  set posts(posts) {
-    console.log(posts)
+  render() {
+    this.shadowRoot.innerHTML = `${this.css}${this.html}`
+  }
+
+  connectedCallback() {
+    this.name = this.getAttribute('name')
+    this.render()
+  }
+
+  set tabs(tabs) {
+    /** 
+     * Tabs is set from outside the web component 
+     * 
+     * @example 
+     * const foo = createElement('session-card')
+     * foo.tabs = [[google, firefox], [www.google.com, www.firefox.com]]
+     */
+
+    const [tabTitles, tabUrls] = tabs
+    const listItems = []
+
+    for (let i = 0; i < tabTitles.length; i++) {
+      listItems.push(`<li><a target="_blank" href="${tabUrls[i]}">${tabTitles[i]}</a></li>`)
+    }
+
+    this.tabListItems = listItems.join('')
   }
 }

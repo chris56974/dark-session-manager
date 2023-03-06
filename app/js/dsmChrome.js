@@ -1,12 +1,11 @@
 import {
   refreshSessionsListInTheDom,
-} from "./dom.js"
+} from "./dsmDom.js"
 
 /** 
  * These functions don't have anything to do with the DOM 
  * They're only meant for manipulating chrome storage, tabs, etc.
  */
-
 export async function createChromeTabs(tabUrls, sessionName, color) {
   const newTabIds = []
 
@@ -58,25 +57,22 @@ export async function addSessionTabsToCurrentTabs(sessionName) {
 }
 
 export async function createNewSessionInChromeStorage(newSessionName, newSessionColor) {
+  // grab current tabs and stored sessions
   const [tabs, { sessions: existingSessions }] = await Promise.all([
     chrome.tabs.query({ currentWindow: true }),
     chrome.storage.local.get('sessions')
   ])
 
-  console.log("existingSessions", existingSessions)
   if (tabs.length === 0) return alert("Nothing to save")
   if (existingSessions && newSessionName in existingSessions) return alert(`The session ${newSessionName} already exists`)
 
-  const { tabIds, tabUrls, tabTitles } = tabs
+  const { tabUrls, tabTitles } = tabs
     .splice(0, tabs.length - 1) // grab all the tabs except DSM
     .reduce((acc, tab) => {
-      acc.tabIds.push(tab.id);
       acc.tabUrls.push(tab.url);
       acc.tabTitles.push(tab.title);
       return acc;
-    }, { tabIds: [], tabUrls: [], tabTitles: [] });
-
-  createTabGroup(tabIds, newSessionName, newSessionColor)
+    }, { tabUrls: [], tabTitles: [] });
 
   await chrome.storage.local.set({
     sessions: {
@@ -109,4 +105,3 @@ export async function removeTabGroup(tabGroupId) {
   const tabIds = tabs.map(tab => tab.id)
   await chrome.tabs.remove(tabIds)
 }
-

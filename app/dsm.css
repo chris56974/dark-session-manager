@@ -2,9 +2,7 @@
   --dsm-width: 1000px;
 
   /* Colors */
-  --white-high: hsl(0, 0%, 87%);
-  --white-medium: hsl(0, 0%, 60%);
-  --white-low: hsl(0, 0%, 38%);
+  --white: rgb(239, 239, 239);
 
   --primary: #BB86FC;
   --primary-variant: #3700B3;
@@ -12,6 +10,7 @@
 
   --background-color: hsl(0deg 0% 7%);
   --session-background-color: hsl(0deg 0% 9%);
+  --dark: rgb(51 51 51);
 }
 
 *,
@@ -22,11 +21,15 @@
   box-sizing: inherit;
 }
 
+::-webkit-scrollbar {
+  background-color: transparent;
+}
+
 body {
   box-sizing: border-box;
   background-color: var(--background-color);
   font-size: var(--font-size-base);
-  color: var(--white-high);
+  color: var(--white);
 }
 
 main {
@@ -46,8 +49,8 @@ form {
 /* session inputs */
 .session-name-input {
   font-size: inherit;
-  color: white;
-  background-color: grey;
+  background-color: var(--dark);
+  color: var(--white);
   border: none;
   border-radius: 1em;
   padding: 0.4em 1em;
@@ -55,13 +58,13 @@ form {
 }
 
 .session-name-input::placeholder {
-  color: white;
+  color: var(--white);
 }
 
 .create-session-btn {
   font-size: larger;
   background-color: transparent;
-  color: var(--white-high);
+  color: var(--white);
   border: none;
   border-radius: 50px;
 }

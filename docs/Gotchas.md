@@ -1,17 +1,50 @@
-## Gotchas 
+# Gotchas 
 
-### Web Components 
+## `this.foo = this.bar.bind(this)` creates a new method for this.foo (it doesn't reuse this.bar) 
 
-#### foo.bind(this) creates a new function, making it difficult to remove event listeners
+> In vanilla ES5, you have to be careful when defining methods that use `this` alongside event listeners. Because `this` refers to whatever calls the method (HTMLButton) and not the class instance itself. 
 
-I had to use this.method.bind(this) a couple times to make sure that `this` pointed to my web component and not the button that fired the event. What's interesting to note however, is that this.method.bind(this) will create a new function everytime it's called. So it will be impossible to remove that event listener unless you create a reference in the constructor.
+In order to fix what `this` points to, you might bind it i.e. `this.foo = this.bar.bind(this)`. This fixes the `this` problem, but if you don't bind it in the constructor you could get code that looks like this...
 
-#### Be weary of your selectors when using the transition property
+```js
+constructor() {
+  this.p = <p>hi</p>
+}
+connectedCallback() {
+  // this.bar.bind(this) is a new function!
+  this.p.addEventListener('click', this.bar.bind(this))
+}
 
-Make sure the selectors match when transitioning scale(0) to scale(1) or something.
+disconnectedCallback() {
+  // this.bar.bind(this) is also a new function! It's not the same this.bar.bind(this)!
+  this.p.removeEventListener('click', this.bar.bind(this))
+}
+```
 
-##### The display property can also prevent transitions from happening
+So you can't remove the event listener. You have to do this instead.
 
-### You can't nest a button element in a button element
+```js
+constructor() {
+  this.p = <p>hi</p>
+  this.foo = this.bar.bind(this)
+}
+connectedCallback() {
+  this.p.addEventListener('click', this.foo)
+}
 
-If you ever see child elements appear outside the parent element that they're supposed to be nested under, you're likely writing invalid HTML.
+disconnectedCallback() {
+  this.p.removeEventListener('click', this.foo)
+}
+```
+
+Or you have to make this.bar an ES6+ class field.
+
+## `display: none;` can prevent transitions from happening
+
+## If see child elements outside of their parent element, you're writing invalid HTML 
+
+This happens when you do stuff like nest a button inside a button, which is not allowed.
+
+## ::-webkit-scrollbar-anything will not work until you change SOMETHING inside ::-webkit-scrollbar {}
+
+https://stackoverflow.com/questions/44212713/styling-webkit-scrollbar-track-not-working

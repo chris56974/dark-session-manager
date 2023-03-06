@@ -6,7 +6,7 @@ import {
   addSessionTabsToCurrentTabs,
   createNewSessionInChromeStorage,
   deleteSessionFromChromeStorage,
-} from "./chromeApi.js"
+} from "./dsmChrome.js"
 
 /** 
  * Web components
@@ -52,7 +52,7 @@ export async function createNewSession(e) {
   // @ts-ignore
   const newSessionName = newSessionInput.value.toString()
   // @ts-ignore
-  const newSessionColor = newSessionColorBtn.dataset.selectedColor
+  const newSessionColor = newSessionColorBtn.dataset.color
 
   if (newSessionName.length === 0) return window.alert("No name provided")
 
@@ -83,29 +83,16 @@ export async function refreshSessionsListInTheDom() {
 }
 
 export function createAndAppendSessionElementToDom(sessionName, session) {
-  const { tabTitles, tabUrls } = session
-
   const sessionEl = document.createElement("session-card")
-  sessionEl.dataset.color = session.color
+  sessionEl.setAttribute('name', sessionName)
+  // @ts-ignore
+  sessionEl.tabs = [session.tabTitles, session.tabUrls]
 
-  const tabsList = sessionEl.shadowRoot.querySelector('.session-tabs')
-  tabsList.innerHTML = `
-     ${tabTitles[0] ? `<li class="session-tab">
-        <a class="session-tab__title" href="${tabUrls[0]}" target="_blank">${tabTitles[0]}</a>
-      </li>` : ``}
-      ${tabTitles[1] ?
-      `<li class="session-tab">
-        <a class="session-tab__title" href="${tabUrls[1]}" target="_blank">${tabTitles[1]}</a>
-      </li>` : ``}
-      ${tabTitles[2] ?
-      `<li class="session-tab">
-        <a class="session-tab__title" href="${tabUrls[2]}" target="_blank">${tabTitles[2]}</a>
-      </li>` : ``}
-  `
+  const shadowRoot = sessionEl.shadowRoot
 
-  const deleteSessionBtn = sessionEl.shadowRoot.querySelector('.delete-session-btn')
-  const replaceTabsBtn = sessionEl.shadowRoot.querySelector('.replace-tabs-btn')
-  const addTabsBtn = sessionEl.shadowRoot.querySelector('.add-tabs-btn')
+  const deleteSessionBtn = shadowRoot.querySelector('.delete-session-btn')
+  const replaceTabsBtn = shadowRoot.querySelector('.replace-tabs-btn')
+  const addTabsBtn = shadowRoot.querySelector('.add-tabs-btn')
 
   deleteSessionBtn.addEventListener('click', addClickHandler(deleteSessionFromChromeStorage, sessionName))
   replaceTabsBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))

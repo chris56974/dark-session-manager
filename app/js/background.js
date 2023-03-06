@@ -6,9 +6,11 @@ chrome.windows.onCreated.addListener(dsmInit)
 chrome.tabs.onAttached.addListener(moveDsmToEnd)
 chrome.tabs.onCreated.addListener(moveDsmToEnd)
 chrome.tabs.onMoved.addListener(moveDsmToEnd)
-chrome.tabs.onRemoved.addListener(closeDsmIfEmpty)
+chrome.tabs.onRemoved.addListener(onRemovedHandler)
 
-chrome.commands.onCommand.addListener(navigateToDsm)
+chrome.commands.onCommand.addListener(runCommand)
+
+chrome.browserAction.onClicked.addListener(navigateToDSM)
 
 /** 
  * EVENT HANDLERS
@@ -27,18 +29,24 @@ async function moveDsmToEnd() {
   await chrome.tabs.move(result[windowId], { index: -1 })
 }
 
-async function navigateToDsm(command) {
-  if (command === "open-dsm") {
-    const tabs = await chrome.tabs.query({ currentWindow: true })
-    await chrome.tabs.update(tabs[tabs.length - 1].id, { active: true })
-  }
-}
 
-async function closeDsmIfEmpty() {
-  const [allTabs, [activeTab]] = await Promise.all([
+async function onRemovedHandler(tabId, removeInfo) {
+  // the window that had its tab removed
+  // https://developer.chrome.com/docs/extensions/reference/tabs/#event-onRemoved
+  const { windowId } = removeInfo
+
+  const [allTabs, [activeTab], result] = await Promise.all([
     chrome.tabs.query({ currentWindow: true }),
-    chrome.tabs.query({ active: true, currentWindow: true })
+    chrome.tabs.query({ active: true, currentWindow: true }),
+    chrome.storage.session.get(windowId.toString())
   ])
+
+  const dsmTabId = result[windowId.toString()]
+
+  // if DSM was closed open it back up again
+  if (tabId === dsmTabId) {
+    return dsmInit()
+  }
 
   // If DSM is the only tab left
   if (allTabs.length === 1) {
@@ -46,10 +54,23 @@ async function closeDsmIfEmpty() {
     await chrome.tabs.remove(allTabs[0].id)
   }
 
-  // If DSM is not the only tab left, focus the tab left of it
+  // If DSM is not the only tab left, and if user is currently on DSM after deleting some tab 
+  // focus the tab to the left of DSM
   const dsmTab = allTabs[allTabs.length - 1]
   if (dsmTab && activeTab.id === dsmTab.id) {
     const dsmPreTab = allTabs[allTabs.length - 2]
     if (dsmPreTab) await chrome.tabs.update(dsmPreTab.id, { active: true })
   }
+}
+
+async function runCommand(command) {
+  if (command === "open-dsm") {
+    return navigateToDSM()
+  }
+}
+
+async function navigateToDSM() {
+  // This actually just navigates to the final tab
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+  chrome.tabs.update(tabs[tabs.length - 1].id, { active: true })
 }
