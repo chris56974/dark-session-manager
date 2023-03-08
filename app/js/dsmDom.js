@@ -1,7 +1,5 @@
-import { addClickHandler } from "./utility.js"
-import { ColorButton, SessionCard } from "./components/index.js"
+import "./components/index.js"
 import {
-  removeAllChromeTabs,
   replaceChromeTabsWithSessionTabs,
   addSessionTabsToCurrentTabs,
   createNewSessionInChromeStorage,
@@ -9,17 +7,10 @@ import {
 } from "./dsmChrome.js"
 
 /** 
- * Web components
- */
-customElements.define('color-btn', ColorButton)
-customElements.define('session-card', SessionCard)
-
-/** 
  * DOM ELEMENTS
  */
 const newSessionInput = document.querySelector(".session-name-input")
 const newSessionBtn = document.querySelector(".create-session-btn")
-const clearTabsBtn = document.querySelector(".clear-tabs-btn")
 const sessionGrid = document.querySelector(".sessions-grid")
 const newSessionColorBtn = document.querySelector("color-btn")
 
@@ -28,7 +19,6 @@ const newSessionColorBtn = document.querySelector("color-btn")
  */
 window.addEventListener('load', () => { refreshSessionsListInTheDom() })
 document.addEventListener('keydown', keyboardCommands)
-clearTabsBtn.addEventListener('click', removeAllChromeTabs)
 newSessionBtn.addEventListener('click', createNewSession)
 
 async function keyboardCommands(e) {
@@ -85,18 +75,27 @@ export async function refreshSessionsListInTheDom() {
 export function createAndAppendSessionElementToDom(sessionName, session) {
   const sessionEl = document.createElement("session-card")
   sessionEl.setAttribute('name', sessionName)
+
   // @ts-ignore
-  sessionEl.tabs = [session.tabTitles, session.tabUrls]
+  sessionEl.tabs = session.tabs
 
-  const shadowRoot = sessionEl.shadowRoot
+  // @ts-ignore
+  sessionEl.cardHeading = sessionName
 
-  const deleteSessionBtn = shadowRoot.querySelector('.delete-session-btn')
-  const replaceTabsBtn = shadowRoot.querySelector('.replace-tabs-btn')
-  const addTabsBtn = shadowRoot.querySelector('.add-tabs-btn')
+  sessionEl.addEventListener('delete-session', (event) => {
+    event.preventDefault()
+    deleteSessionFromChromeStorage(sessionName)
+  })
 
-  deleteSessionBtn.addEventListener('click', addClickHandler(deleteSessionFromChromeStorage, sessionName))
-  replaceTabsBtn.addEventListener('click', addClickHandler(replaceChromeTabsWithSessionTabs, sessionName))
-  addTabsBtn.addEventListener('click', addClickHandler(addSessionTabsToCurrentTabs, sessionName))
+  sessionEl.addEventListener('replace-tabs', (event) => {
+    event.preventDefault()
+    replaceChromeTabsWithSessionTabs(sessionName)
+  })
+
+  sessionEl.addEventListener('add-tabs', (event) => {
+    event.preventDefault()
+    addSessionTabsToCurrentTabs(sessionName)
+  })
 
   // sessionGrid was query selected earlier on line 17
   sessionGrid.appendChild(sessionEl)
@@ -108,7 +107,6 @@ export function createAndAppendSessionElementToDom(sessionName, session) {
 export const revealStorageBtn = document.querySelector('.reveal-storage-btn')
 revealStorageBtn.addEventListener('click', async () => {
   const foo = await chrome.storage.local.get(null)
-  console.log(foo)
 })
 
 export const clearStorageBtn = document.querySelector('.clear-storage-btn')

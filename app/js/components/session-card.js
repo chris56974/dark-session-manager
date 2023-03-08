@@ -1,8 +1,15 @@
 export class SessionCard extends HTMLElement {
+  #tabs = []
+  #cardHeading = ""
+
   constructor() {
     super()
     this.attachShadow({ mode: 'open', delegatesFocus: true })
     this.render()
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = `${this.css}${this.html}`
   }
 
   get css() {
@@ -72,7 +79,6 @@ export class SessionCard extends HTMLElement {
           padding-block: 2px;
           white-space: nowrap;
           overflow: hidden;
-          text-overflow: ellipsis;
         }
 
         a {
@@ -108,10 +114,14 @@ export class SessionCard extends HTMLElement {
       <article>
         <div class="content">
           <div class="heading-div">
-            <h2>${this.name}</h2>
+            <h2>${this.#cardHeading}</h2>
             <button class="delete-session-btn">🚮</button>
           </div>
-          <ul>${this.tabListItems}</ul>
+          <ul>
+            ${this.#tabs.map((tab) => `
+              <li><a target="_blank" href="${tab.url}">${tab.title}</a></li>
+            `).join('\n')}
+          </ul>
         </div>
         <div class="session-btns">
           <button class="replace-tabs-btn">🔄</button>
@@ -119,15 +129,6 @@ export class SessionCard extends HTMLElement {
         </div>
       </article>
     `
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `${this.css}${this.html}`
-  }
-
-  connectedCallback() {
-    this.name = this.getAttribute('name')
-    this.render()
   }
 
   set tabs(tabs) {
@@ -139,13 +140,35 @@ export class SessionCard extends HTMLElement {
      * foo.tabs = [[google, firefox], [www.google.com, www.firefox.com]]
      */
 
-    const [tabTitles, tabUrls] = tabs
-    const listItems = []
+    this.#tabs = tabs
+    this.render()
+  }
 
-    for (let i = 0; i < tabTitles.length; i++) {
-      listItems.push(`<li><a target="_blank" href="${tabUrls[i]}">${tabTitles[i]}</a></li>`)
-    }
+  set cardHeading(cardHeading) {
+    this.#cardHeading = cardHeading
+    this.render()
+  }
 
-    this.tabListItems = listItems.join('')
+  connectedCallback() {
+    this.shadowRoot.querySelector('.delete-session-btn').addEventListener('click', this.deleteSession)
+    this.shadowRoot.querySelector('.replace-tabs-btn').addEventListener('click', this.replaceTabs)
+    this.shadowRoot.querySelector('.add-tabs-btn').addEventListener('click', this.addTabs)
+  }
+
+  deleteSession = (event) => {
+    event.preventDefault()
+    this.dispatchEvent(new CustomEvent('delete-session'))
+  }
+
+  replaceTabs = (event) => {
+    event.preventDefault()
+    this.dispatchEvent(new CustomEvent('replace-tabs'))
+  }
+
+  addTabs = (event) => {
+    event.preventDefault()
+    this.dispatchEvent(new CustomEvent('add-tabs'))
   }
 }
+
+customElements.define('session-card', SessionCard)

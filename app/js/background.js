@@ -10,7 +10,7 @@ chrome.tabs.onRemoved.addListener(onRemovedHandler)
 
 chrome.commands.onCommand.addListener(runCommand)
 
-chrome.browserAction.onClicked.addListener(navigateToDSM)
+chrome.action.onClicked.addListener(navigateToDSM)
 
 /** 
  * EVENT HANDLERS
@@ -28,7 +28,6 @@ async function moveDsmToEnd() {
   if (!result[windowId]) return
   await chrome.tabs.move(result[windowId], { index: -1 })
 }
-
 
 async function onRemovedHandler(tabId, removeInfo) {
   // the window that had its tab removed

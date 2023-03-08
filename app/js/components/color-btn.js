@@ -154,3 +154,5 @@ export class ColorButton extends HTMLElement {
     if (event.key === 'Enter' || event.key === ' ') this.selectColor(event)
   }
 }
+
+customElements.define('color-btn', ColorButton)

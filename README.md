@@ -33,6 +33,23 @@ You can find the [logo on figma](https://www.figma.com/file/f3AxaotOiuVRECkb7Iqy
 
 I used vanilla JS web components because I wanted DSM to be really fast. Vanilla JS also got unwieldy after a while, I wanted a way to modularize my code and it worked pretty well for it.
 
+## Tabgroup Colors
+
+```js
+// In case I need this later
+export const tabGroupColors = {
+  grey: "#dadce0",
+  blue: "#8ab4f8",
+  red: "#f28b82",
+  yellow: "#fdd663",
+  green: "#81c995",
+  pink: "#ff8bcb",
+  purple: "#c58af9",
+  cyan: "#78d9ec",
+  orange: "#fcad70",
+}
+```
+
 ## [License MIT](https://github.com/chris56974/dark-session-manager/LICENSE)
 
 ## Attribution
