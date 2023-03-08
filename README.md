@@ -1,12 +1,22 @@
 # [Dark Session Manager (DSM)](https://github.com/chris56974/dark-session-manager)
 
-DSM is a session manager inspired by [Workona](https://workona.com/), except the emphasis is not on work but on organized browsing. They do a bunch of other stuff that I don't plan on doing like cloud integrations (Figma, GCloud, Zoom), [universal search](https://workona.com/help/search/), [templates](https://workona.com/templates/), [mobile apps](https://workona.com/help/mobile-support/), etc. So check them out if you want that stuff.
+DSM is a session manager inspired by [Workona](https://workona.com/), except the emphasis is not on work but on organized browsing.
 
-## Chrome Extension Basics
+## Development
 
-This chrome extension only uses a single "extension page" at app/dsm.html.
+1. Clone/fork the directory 
 
-It doesn't use any content scripts (scripts that are injected into the webpage that the user is browsing).
+2. Go to the extensions page of your browser (brave://extensions) and enable "developer mode".
+
+3. Then click "load unpacked" and point it to this directory
+
+4. The extension should then be available in your extensions page
+
+## Chrome Extension Notes
+
+This chrome extension doesn't use any content scripts (scripts that are injected into the webpage that the user is currently browsing).
+
+The default CSP was enough for my needs, it looks something like this...
 
 ```json
 "content_security_policy": {
@@ -14,41 +24,16 @@ It doesn't use any content scripts (scripts that are injected into the webpage t
 }
 ```
 
-### Development
-
-1. Go to the extensions page of your browser (brave://extensions) and enable "developer mode".
-
-2. Then click "load unpacked" and point it to the directory holding DSM.
-
 ## Shortcuts
 
-I would love to override the browser shortcuts but I don't think I can.
+I would love to override the browser's default shortcuts, but I don't think I can.
 
-- `J` -> move left one tab
-- `K` -> move right one tab
+- `J` -> move one tab to the left of DSM
+- `K` -> move one tab to the right of DSM
 
 ## Design
 
 You can find the [logo on figma](https://www.figma.com/file/f3AxaotOiuVRECkb7Iqy8k/Dark-Session-Manager-Logo?node-id=0%3A1).
-
-I used vanilla JS web components because I wanted DSM to be really fast. Vanilla JS also got unwieldy after a while, I wanted a way to modularize my code and it worked pretty well for it.
-
-## Tabgroup Colors
-
-```js
-// In case I need this later
-export const tabGroupColors = {
-  grey: "#dadce0",
-  blue: "#8ab4f8",
-  red: "#f28b82",
-  yellow: "#fdd663",
-  green: "#81c995",
-  pink: "#ff8bcb",
-  purple: "#c58af9",
-  cyan: "#78d9ec",
-  orange: "#fcad70",
-}
-```
 
 ## [License MIT](https://github.com/chris56974/dark-session-manager/LICENSE)
 

@@ -61,7 +61,7 @@ form {
   color: var(--white);
 }
 
-.create-session-btn {
+.new-session-btn {
   font-size: larger;
   background-color: transparent;
   color: var(--white);
@@ -86,10 +86,6 @@ form {
 }
 
 /* BUTTONS */
-.settings-btn {
-  margin-left: auto;
-}
-
 button {
   cursor: pointer;
   color: var(--white-high);

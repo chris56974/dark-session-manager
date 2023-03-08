@@ -22,9 +22,7 @@
     "128": "imgs/128x128.png"
   },
   "permissions": [
-    "sessions",
     "tabs",
-    "tabGroups",
     "storage"
   ],
   "commands": {

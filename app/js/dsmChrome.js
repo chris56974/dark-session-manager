@@ -1,6 +1,6 @@
 import { refreshSessionsListInTheDom } from "./dsmDom.js"
 
-export async function replaceChromeTabsWithSessionTabs(sessionName) {
+export async function replaceAllTabsWithSessionTabs(sessionName) {
   // grab the current tabs so I can delete them later
   const tabsWithDsm = await chrome.tabs.query({ currentWindow: true })
   const tabIds = tabsWithDsm
@@ -27,7 +27,7 @@ export async function addSessionTabsToCurrentTabs(sessionName) {
   }
 }
 
-export async function createNewSessionInChromeStorage(newSessionName, newSessionColor) {
+export async function createNewSession(newSessionName, newSessionColor) {
   // grab current tabs and stored sessions
   let [tabs, { sessions: existingSessions }] = await Promise.all([
     chrome.tabs.query({ currentWindow: true }),
@@ -59,7 +59,7 @@ export async function createNewSessionInChromeStorage(newSessionName, newSession
   })
 }
 
-export async function deleteSessionFromChromeStorage(sessionName) {
+export async function deleteSession(sessionName) {
   const { sessions } = await chrome.storage.local.get("sessions")
   const newSessions = { ...sessions }
   delete newSessions[sessionName]
