@@ -20,6 +20,7 @@ let extensionEnabled = false
 const chromeExtensionUrl = chrome.runtime.getURL('app/dsm.html')
 
 async function dsmInit(active = false) {
+  if (!extensionEnabled) return
   // if DSM is already open do nothing
   const tabs = await chrome.tabs.query({ currentWindow: true })
   if (tabs[tabs.length - 1].title === "dsm") return
