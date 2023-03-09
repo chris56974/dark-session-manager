@@ -10,7 +10,9 @@ chrome.tabs.onRemoved.addListener(onRemovedHandler)
 
 chrome.commands.onCommand.addListener(runCommand)
 
-chrome.action.onClicked.addListener(navigateToDSM)
+chrome.action.onClicked.addListener(actionHandler)
+
+let extensionEnabled = true
 
 /** 
  * EVENT HANDLERS
@@ -28,6 +30,8 @@ async function dsmInit() {
 }
 
 async function moveDsmToEnd() {
+  if (!extensionEnabled) return
+
   const { id: windowId } = await chrome.windows.getCurrent()
   const result = await chrome.storage.session.get(windowId.toString())
   if (!result[windowId]) return
@@ -35,6 +39,8 @@ async function moveDsmToEnd() {
 }
 
 async function onRemovedHandler(tabId, removeInfo) {
+  if (!extensionEnabled) return
+
   // the window that had its tab removed
   // https://developer.chrome.com/docs/extensions/reference/tabs/#event-onRemoved
   const { windowId } = removeInfo
@@ -68,13 +74,33 @@ async function onRemovedHandler(tabId, removeInfo) {
 }
 
 async function runCommand(command) {
+  if (!extensionEnabled) return
   if (command === "open-dsm") {
     return navigateToDSM()
   }
 }
 
 async function navigateToDSM() {
-  // This actually just navigates to the final tab
+  if (!extensionEnabled) return
+  // This just navigates to the final tab
   const tabs = await chrome.tabs.query({ currentWindow: true })
-  chrome.tabs.update(tabs[tabs.length - 1].id, { active: true })
+  const finalTab = tabs[tabs.length - 1]
+
+  chrome.tabs.update(finalTab.id, { active: true })
+}
+
+async function actionHandler() {
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+  const finalTab = tabs[tabs.length - 1]
+
+  if (finalTab.title === "dsm") {
+    extensionEnabled = false
+    chrome.tabs.remove(finalTab.id)
+  } else {
+    extensionEnabled = true
+    dsmInit()
+  }
+
+
+  chrome.tabs.update(finalTab.id, { active: true })
 }
