@@ -39,6 +39,7 @@ You can find the [logo on figma](https://www.figma.com/file/f3AxaotOiuVRECkb7Iqy
 
 ## Attribution
 
+- [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
+
 - [Fluid Type Scale](https://www.fluid-type-scale.com/)
 
-- [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)

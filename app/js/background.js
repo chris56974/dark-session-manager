@@ -18,6 +18,11 @@ chrome.action.onClicked.addListener(navigateToDSM)
 const chromeExtensionUrl = chrome.runtime.getURL('app/dsm.html')
 
 async function dsmInit() {
+  // if DSM is already open do nothing
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+  if (tabs[tabs.length - 1].title === "dsm") return
+
+  // open DSM
   const { id, windowId } = await chrome.tabs.create({ url: 'app/dsm.html', active: false })
   await chrome.storage.session.set({ [windowId]: id })
 }

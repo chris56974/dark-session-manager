@@ -32,6 +32,13 @@ body {
   color: var(--white);
 }
 
+button {
+  cursor: pointer;
+  color: var(--white-high);
+  background-color: transparent;
+  border: none;
+}
+
 main {
   margin: 2% auto;
   width: var(--dsm-width);
@@ -46,7 +53,6 @@ form {
   margin-bottom: 2%;
 }
 
-/* session inputs */
 .session-name-input {
   font-size: inherit;
   background-color: var(--dark);
@@ -83,12 +89,4 @@ form {
 
   list-style-type: none;
   overflow-y: auto;
-}
-
-/* BUTTONS */
-button {
-  cursor: pointer;
-  color: var(--white-high);
-  background-color: transparent;
-  border: none;
 }
