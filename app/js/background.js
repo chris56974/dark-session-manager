@@ -1,7 +1,7 @@
 /** 
  * EVENT LISTENERS
  */
-chrome.windows.onCreated.addListener(dsmInit)
+chrome.windows.onCreated.addListener(() => { dsmInit() })
 
 chrome.tabs.onAttached.addListener(moveDsmToEnd)
 chrome.tabs.onCreated.addListener(moveDsmToEnd)
@@ -12,20 +12,20 @@ chrome.commands.onCommand.addListener(runCommand)
 
 chrome.action.onClicked.addListener(actionHandler)
 
-let extensionEnabled = true
+let extensionEnabled = false
 
 /** 
  * EVENT HANDLERS
  */
 const chromeExtensionUrl = chrome.runtime.getURL('app/dsm.html')
 
-async function dsmInit() {
+async function dsmInit(active = false) {
   // if DSM is already open do nothing
   const tabs = await chrome.tabs.query({ currentWindow: true })
   if (tabs[tabs.length - 1].title === "dsm") return
 
   // open DSM
-  const { id, windowId } = await chrome.tabs.create({ url: 'app/dsm.html', active: false })
+  const { id, windowId } = await chrome.tabs.create({ url: 'app/dsm.html', active })
   await chrome.storage.session.set({ [windowId]: id })
 }
 
@@ -74,9 +74,8 @@ async function onRemovedHandler(tabId, removeInfo) {
 }
 
 async function runCommand(command) {
-  if (!extensionEnabled) return
   if (command === "open-dsm") {
-    return navigateToDSM()
+    if (extensionEnabled) navigateToDSM()
   }
 }
 
@@ -98,9 +97,8 @@ async function actionHandler() {
     chrome.tabs.remove(finalTab.id)
   } else {
     extensionEnabled = true
-    dsmInit()
+    dsmInit(true)
   }
-
 
   chrome.tabs.update(finalTab.id, { active: true })
 }
