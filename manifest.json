@@ -2,7 +2,7 @@
   "name": "Dark Session Manager",
   "description": "A dark theme session manager",
   "homepage_url": "https://github.com/chris56974/dark-session-manager",
-  "version": "1.00",
+  "version": "1.02",
   "manifest_version": 3,
   "background": {
     "service_worker": "app/js/background.js"

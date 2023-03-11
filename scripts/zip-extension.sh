@@ -1,1 +1,1 @@
-zip -r DsmExtension.zip app/ manifest.json
+zip -r DsmExtension.zip app/ manifest.json imgs/

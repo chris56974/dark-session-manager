@@ -1,7 +1,7 @@
 {
   "name": "dark-session-manager",
   "author": "chris56974",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Chrome extension used for organized web browsing",
   "main": "index.js",
   "scripts": {
