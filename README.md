@@ -1,6 +1,6 @@
 # [Dark Session Manager (DSM)](https://github.com/chris56974/dark-session-manager)
 
-DSM is a session manager inspired by [Workona](https://workona.com/), except the emphasis is not on work but on organized browsing.
+DSM is a session manager inspired by [Workona](https://workona.com/), except the emphasis is not on work but on organized browsing. [Click here to go to DSM on the Chrome Webstore](https://chrome.google.com/webstore/detail/dark-session-manager/koliemhjhigddgnlnaanhijbfdhfkeba).
 
 ## Development
 
